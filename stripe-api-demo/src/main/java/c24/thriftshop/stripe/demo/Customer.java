@@ -40,4 +40,16 @@ public class Customer {
     public String getCurrency() {
         return currency;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id='" + id + '\'' +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", balance=" + balance +
+                ", currency='" + currency + '\'' +
+                '}';
+    }
 }
