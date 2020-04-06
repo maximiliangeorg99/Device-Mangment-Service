@@ -1,4 +1,4 @@
-package c24.thriftshop.stripe.demo;
+package c24.thriftshop.stripe.demo.presentation;
 
 import com.google.gson.annotations.SerializedName;
 
