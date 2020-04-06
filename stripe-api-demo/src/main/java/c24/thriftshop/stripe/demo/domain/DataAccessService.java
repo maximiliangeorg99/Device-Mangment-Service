@@ -6,8 +6,8 @@ import com.google.gson.*;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 
-public class CustomerService {
-    public Customer getCustomer(String id) {
+public class DataAccessService implements CustomerDao {
+    public Customer getCustomerById(String id) {
         //Deserialization
         HttpResponse<String> response = Unirest.get("https://api.stripe.com/v1/customers/" + id)
                 .header("authorization", "Basic c2tfdGVzdF80ZUMzOUhxTHlqV0Rhcmp0VDF6ZHA3ZGM6Og==")
@@ -29,7 +29,7 @@ public class CustomerService {
         return customers;
     }
 
-    public boolean deleteCustomer(String id) {
+    public boolean deleteCustomerById(String id) {
 
         HttpResponse<String> response = Unirest.delete("https://api.stripe.com/v1/customers/" + id)
                 .header("authorization", "Basic c2tfdGVzdF80ZUMzOUhxTHlqV0Rhcmp0VDF6ZHA3ZGM6Og==")
@@ -57,7 +57,7 @@ public class CustomerService {
         return customer;
     }
 
-    public Customer updateCustomer(Customer Input, String oldId) {
+    public Customer updateCustomerById(Customer Input, String oldId) {
         HttpResponse<String> response = Unirest.post("https://api.stripe.com/v1/customers/" + oldId + "?"
                 + "email=" + Input.getEmail() + "&"
                 + "name=" + Input.getName() + "&"
