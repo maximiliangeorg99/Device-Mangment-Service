@@ -21,30 +21,39 @@ public class Service {
         return customer;
     }
 
-    public Customers getAllCustomer() {
+    public Customers getAllCustomer() throws ApiException {
         //Deserialization
         HttpResponse<String> response = Unirest.get("https://api.stripe.com/v1/customers")
                 .header("authorization", "Basic c2tfdGVzdF80ZUMzOUhxTHlqV0Rhcmp0VDF6ZHA3ZGM6Og==")
                 .asString();
         Gson gson = new Gson();
         String jsonString = response.getBody();
-
+        //Error
+        if (!response.isSuccess()) {
+            ApiException e = gson.fromJson(jsonString, ApiException.class);
+            throw e;
+        }
         Customers customers = gson.fromJson(jsonString, Customers.class);
         return customers;
     }
 
-    public boolean deleteCustomer(String id) {
+    public boolean deleteCustomer(String id) throws ApiException {
 
         HttpResponse<String> response = Unirest.delete("https://api.stripe.com/v1/customers/" + id)
                 .header("authorization", "Basic c2tfdGVzdF80ZUMzOUhxTHlqV0Rhcmp0VDF6ZHA3ZGM6Og==")
                 .asString();
-        String json = response.getBody();
+        String jsonString = response.getBody();
         Gson gson = new Gson();
-        DeletedMessage m = gson.fromJson(json, DeletedMessage.class);
+        //Error
+        if (!response.isSuccess()) {
+            ApiException e = gson.fromJson(jsonString, ApiException.class);
+            throw e;
+        }
+        DeletedMessage m = gson.fromJson(jsonString, DeletedMessage.class);
         return m.deleted;
     }
 
-    public Customer createCustomer(Customer Input) {
+    public Customer createCustomer(Customer Input) throws ApiException {
         //Hard Coded Version
         HttpResponse<String> response = Unirest.post("https://api.stripe.com/v1/customers?description="
                 + "id=" + Input.getId() + "&"
@@ -57,11 +66,16 @@ public class Service {
                 .asString();
         String jsonString = response.getBody();
         Gson gson = new Gson();
+        //Error
+        if (!response.isSuccess()) {
+            ApiException e = gson.fromJson(jsonString, ApiException.class);
+            throw e;
+        }
         Customer customer = gson.fromJson(jsonString, Customer.class);
         return customer;
     }
 
-    public Customer updateCustomer(Customer Input, String oldId) {
+    public Customer updateCustomer(Customer Input, String oldId) throws ApiException {
         HttpResponse<String> response = Unirest.post("https://api.stripe.com/v1/customers/" + oldId + "?"
                 + "email=" + Input.getEmail() + "&"
                 + "name=" + Input.getName() + "&"
@@ -72,6 +86,11 @@ public class Service {
                 .asString();
         String jsonString = response.getBody();
         Gson gson = new Gson();
+        //Error
+        if (!response.isSuccess()) {
+            ApiException e = gson.fromJson(jsonString, ApiException.class);
+            throw e;
+        }
         Customer customer = gson.fromJson(jsonString, Customer.class);
         return customer;
     }
