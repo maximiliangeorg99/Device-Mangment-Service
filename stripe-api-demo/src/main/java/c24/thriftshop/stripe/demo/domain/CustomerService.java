@@ -6,7 +6,7 @@ import com.google.gson.*;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 
-public class Service {
+public class CustomerService {
     public Customer getCustomer(String id) {
         //Deserialization
         HttpResponse<String> response = Unirest.get("https://api.stripe.com/v1/customers/" + id)
