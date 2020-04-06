@@ -1,4 +1,4 @@
-package c24.thriftshop.stripe.demo.domain;
+package c24.thriftshop.stripe.demo.persistence;
 
 public class DeletedMessage {
     String id;
