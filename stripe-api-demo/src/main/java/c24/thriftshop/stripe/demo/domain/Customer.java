@@ -1,4 +1,4 @@
-package c24.thriftshop.stripe.demo.presentation;
+package c24.thriftshop.stripe.demo.domain;
 
 public class Customer {
     private String id;

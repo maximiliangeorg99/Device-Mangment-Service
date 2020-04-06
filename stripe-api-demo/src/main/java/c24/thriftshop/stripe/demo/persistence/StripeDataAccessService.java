@@ -1,8 +1,5 @@
 package c24.thriftshop.stripe.demo.persistence;
 
-import c24.thriftshop.stripe.demo.domain.CustomerDao;
-import c24.thriftshop.stripe.demo.presentation.Customer;
-import c24.thriftshop.stripe.demo.presentation.Customers;
 import com.google.gson.*;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
