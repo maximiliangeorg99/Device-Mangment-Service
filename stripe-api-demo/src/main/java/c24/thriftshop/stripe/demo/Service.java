@@ -1,18 +1,22 @@
 package c24.thriftshop.stripe.demo;
 
 import com.google.gson.*;
-import kong.unirest.HttpRequest;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 
 public class Service {
-    public Customer getCustomer() {
+    public Customer getCustomer(String id) throws ApiException {
         //Deserialization
-        HttpResponse<String> response = Unirest.get("https://api.stripe.com/v1/customers/cus_H1o95j2ytbto3e")
+        HttpResponse<String> response = Unirest.get("https://api.stripe.com/v1/customers/" + id)
                 .header("authorization", "Basic c2tfdGVzdF80ZUMzOUhxTHlqV0Rhcmp0VDF6ZHA3ZGM6Og==")
                 .asString();
         String jsonString = response.getBody();
         Gson gson = new Gson();
+        //Error
+        if (!response.isSuccess()) {
+            ApiException e = gson.fromJson(jsonString, ApiException.class);
+            throw e;
+        }
         Customer customer = gson.fromJson(jsonString, Customer.class);
         return customer;
     }
