@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 
 public class CustomerModel {
     private static final DecimalFormat df2 = new DecimalFormat("#,##");
+
     private final String id;
     private final Email email;
     private final String name;

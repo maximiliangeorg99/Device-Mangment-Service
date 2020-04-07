@@ -3,9 +3,9 @@ package c24.thriftshop.stripe.demo.domain;
 import c24.thriftshop.stripe.demo.persistence.StripeCustomer;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class Customers {
@@ -13,7 +13,8 @@ public class Customers {
     List<Customer> list;
 
     public Customers(final Collection<StripeCustomer> stripeCustomers) {
-        list = Collections.EMPTY_LIST;
+        //To-Do
+        list = new ArrayList<>();
         for (final StripeCustomer stripeCustomer : stripeCustomers) {
             final Customer customer = new Customer(stripeCustomer);
             list.add(customer);
