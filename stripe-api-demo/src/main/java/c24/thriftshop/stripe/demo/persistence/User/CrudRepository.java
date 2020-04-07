@@ -1,4 +1,4 @@
-package c24.thriftshop.stripe.demo.persistence;
+package c24.thriftshop.stripe.demo.persistence.User;
 
 import java.util.Collection;
 import java.util.Optional;

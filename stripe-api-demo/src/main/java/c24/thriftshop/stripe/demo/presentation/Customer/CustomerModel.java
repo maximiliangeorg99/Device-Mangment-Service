@@ -1,13 +1,13 @@
-package c24.thriftshop.stripe.demo.presentation;
+package c24.thriftshop.stripe.demo.presentation.Customer;
 
-import c24.thriftshop.stripe.demo.domain.Customer;
-import c24.thriftshop.stripe.demo.domain.Email;
-import c24.thriftshop.stripe.demo.domain.Phone;
+import c24.thriftshop.stripe.demo.domain.Customer.Customer;
+import c24.thriftshop.stripe.demo.domain.Customer.Email;
+import c24.thriftshop.stripe.demo.domain.Customer.Phone;
 
 import java.text.DecimalFormat;
 
 public class CustomerModel {
-    private static final DecimalFormat df2 = new DecimalFormat("#,##");
+    private static final DecimalFormat df2 = new DecimalFormat("#.00");
 
     private final String id;
     private final Email email;

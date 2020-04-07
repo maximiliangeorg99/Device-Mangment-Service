@@ -1,7 +1,7 @@
-package c24.thriftshop.stripe.demo.domain;
+package c24.thriftshop.stripe.demo.domain.Customer;
 
-import c24.thriftshop.stripe.demo.persistence.CustomerRepository;
-import c24.thriftshop.stripe.demo.persistence.StripeCustomer;
+import c24.thriftshop.stripe.demo.persistence.Customer.CustomerRepository;
+import c24.thriftshop.stripe.demo.persistence.Customer.StripeCustomer;
 
 public class CustomerService {
 

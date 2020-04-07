@@ -1,6 +1,6 @@
-package c24.thriftshop.stripe.demo.domain;
+package c24.thriftshop.stripe.demo.domain.Customer;
 
-import c24.thriftshop.stripe.demo.persistence.StripeCustomer;
+import c24.thriftshop.stripe.demo.persistence.Customer.StripeCustomer;
 
 //phone Klasse,Balance Klasse,Email Klasse,Currency Enum
 public class Customer {

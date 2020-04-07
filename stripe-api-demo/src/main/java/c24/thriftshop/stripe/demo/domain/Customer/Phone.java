@@ -1,4 +1,4 @@
-package c24.thriftshop.stripe.demo.domain;
+package c24.thriftshop.stripe.demo.domain.Customer;
 
 public class Phone {
     String phone;
