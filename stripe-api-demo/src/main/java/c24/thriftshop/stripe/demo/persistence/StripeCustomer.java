@@ -1,5 +1,7 @@
 package c24.thriftshop.stripe.demo.persistence;
 
+import c24.thriftshop.stripe.demo.domain.Customer;
+
 public class StripeCustomer {
     private String id;
     private String description;
@@ -10,8 +12,24 @@ public class StripeCustomer {
     private int balance;
     private String currency;
 
-    public StripeCustomer() {
+    public StripeCustomer(final Customer customer) {
+        final String id = customer.getId();
+        final String email = customer.getEmail().getEmailAsString();
+        final String name = customer.getName();
+        final String phone = customer.getPhone().getPhoneAsString();
+        final int balance = customer.getBalance().getBalanceAsInt();
+        final String currency = customer.getCurrency().toString();
+    }
 
+    public StripeCustomer(final String id, final String description, final String email, final String name, final String phone, final String object, final int balance, final String currency) {
+        this.id = id;
+        this.description = description;
+        this.email = email;
+        this.name = name;
+        this.phone = phone;
+        this.object = object;
+        this.balance = balance;
+        this.currency = currency;
     }
 
     public String getId() {
@@ -44,16 +62,5 @@ public class StripeCustomer {
 
     public String getCurrency() {
         return currency;
-    }
-
-    public StripeCustomer(String id, String description, String email, String name, String phone, String object, int balance, String currency) {
-        this.id = id;
-        this.description = description;
-        this.email = email;
-        this.name = name;
-        this.phone = phone;
-        this.object = object;
-        this.balance = balance;
-        this.currency = currency;
     }
 }

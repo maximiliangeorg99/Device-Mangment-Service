@@ -7,4 +7,11 @@ import java.util.List;
 public class StripeCustomers {
     @SerializedName("data")
     List<StripeCustomer> list;
+
+    public List<StripeCustomer> getlist() {
+        return list;
+    }
 }
+
+
+
