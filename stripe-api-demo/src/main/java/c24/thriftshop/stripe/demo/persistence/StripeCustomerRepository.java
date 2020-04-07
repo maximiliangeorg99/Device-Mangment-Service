@@ -8,15 +8,15 @@ import java.util.Collection;
 import java.util.Optional;
 
 public class StripeCustomerRepository implements CustomerRepository {
+    final Gson gson = new Gson();
+
     public StripeCustomer getCustomerById(final String id) {
         //Deserialization
         final HttpResponse<String> response = Unirest.get("https://api.stripe.com/v1/customers/" + id)
                 .header("authorization", "Basic c2tfdGVzdF80ZUMzOUhxTHlqV0Rhcmp0VDF6ZHA3ZGM6Og==")
                 .asString();
         final String jsonString = response.getBody();
-        final Gson gson = new Gson();
-        final StripeCustomer customer = gson.fromJson(jsonString, StripeCustomer.class);
-        return customer;
+        return gson.fromJson(jsonString, StripeCustomer.class);
     }
 
     public StripeCustomers getAllCustomer() {
@@ -24,10 +24,8 @@ public class StripeCustomerRepository implements CustomerRepository {
         final HttpResponse<String> response = Unirest.get("https://api.stripe.com/v1/customers")
                 .header("authorization", "Basic c2tfdGVzdF80ZUMzOUhxTHlqV0Rhcmp0VDF6ZHA3ZGM6Og==")
                 .asString();
-        final Gson gson = new Gson();
         final String jsonString = response.getBody();
-        final StripeCustomers customers = gson.fromJson(jsonString, StripeCustomers.class);
-        return customers;
+        return gson.fromJson(jsonString, StripeCustomers.class);
     }
 
     public boolean deleteCustomerById(final String id) {
@@ -36,9 +34,7 @@ public class StripeCustomerRepository implements CustomerRepository {
                 .header("authorization", "Basic c2tfdGVzdF80ZUMzOUhxTHlqV0Rhcmp0VDF6ZHA3ZGM6Og==")
                 .asString();
         final String jsonString = response.getBody();
-        final Gson gson = new Gson();
-        final DeletedMessage m = gson.fromJson(jsonString, DeletedMessage.class);
-        return m.deleted;
+        return gson.fromJson(jsonString, DeletedMessage.class).deleted;
     }
 
     public StripeCustomer createCustomer(final StripeCustomer Input) {
@@ -53,9 +49,7 @@ public class StripeCustomerRepository implements CustomerRepository {
                 .header("authorization", "Basic c2tfdGVzdF80ZUMzOUhxTHlqV0Rhcmp0VDF6ZHA3ZGM6Og==")
                 .asString();
         final String jsonString = response.getBody();
-        final Gson gson = new Gson();
-        final StripeCustomer customer = gson.fromJson(jsonString, StripeCustomer.class);
-        return customer;
+        return gson.fromJson(jsonString, StripeCustomer.class);
     }
 
     public StripeCustomer updateCustomerById(final StripeCustomer Input, final String oldId) {
@@ -68,9 +62,7 @@ public class StripeCustomerRepository implements CustomerRepository {
                 .header("authorization", "Basic c2tfdGVzdF80ZUMzOUhxTHlqV0Rhcmp0VDF6ZHA3ZGM6Og==")
                 .asString();
         final String jsonString = response.getBody();
-        final Gson gson = new Gson();
-        final StripeCustomer customer = gson.fromJson(jsonString, StripeCustomer.class);
-        return customer;
+        return gson.fromJson(jsonString, StripeCustomer.class);
     }
 
     @Override

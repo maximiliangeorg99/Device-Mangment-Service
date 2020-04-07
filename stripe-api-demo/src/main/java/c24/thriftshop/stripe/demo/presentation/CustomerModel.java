@@ -50,8 +50,7 @@ public class CustomerModel {
     }
 
     public String getBalance() {
-        final String balanceString = df2.format(balance);
-        return balanceString;
+        return df2.format(balance);
     }
 
     public String getCurrency() {
