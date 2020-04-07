@@ -1,6 +1,6 @@
-package c24.thriftshop.stripe.demo.domain.Customer;
+package c24.thriftshop.stripe.demo.domain.customer;
 
-import c24.thriftshop.stripe.demo.persistence.Customer.StripeCustomer;
+import c24.thriftshop.stripe.demo.persistence.customer.StripeCustomer;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;

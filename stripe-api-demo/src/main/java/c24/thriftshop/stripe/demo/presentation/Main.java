@@ -1,14 +1,16 @@
 package c24.thriftshop.stripe.demo.presentation;
 
-import c24.thriftshop.stripe.demo.domain.Customer.CustomerService;
-import c24.thriftshop.stripe.demo.persistence.Customer.StripeCustomerRepository;
-import c24.thriftshop.stripe.demo.presentation.Customer.CustomerModel;
+import c24.thriftshop.stripe.demo.domain.user.User;
+import c24.thriftshop.stripe.demo.persistence.user.JsonUser;
+import c24.thriftshop.stripe.demo.persistence.user.JsonUserRepository;
 
 public class Main {
     public static void main(final String[] args) {
-        final StripeCustomerRepository stripeCustomerRepository = new StripeCustomerRepository();
-        final CustomerService customerService = new CustomerService(stripeCustomerRepository);
-        final CustomerModel customerModel = new CustomerModel(customerService.getCustomerById("cus_H3KLdrbHbDMhPE"));
-        System.out.println(customerModel);
+        final JsonUserRepository jsonUserRepository = new JsonUserRepository();
+        final User user = new User("Max@web.de", "12345678");
+        final User user2 = new User("Maximilian@web.de", "12345678");
+        jsonUserRepository.save(new JsonUser(user));
+        jsonUserRepository.save(new JsonUser(user2));
+        jsonUserRepository.delete(new JsonUser(user));
     }
 }

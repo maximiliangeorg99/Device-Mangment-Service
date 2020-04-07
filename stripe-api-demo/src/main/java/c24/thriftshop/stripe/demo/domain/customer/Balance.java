@@ -1,4 +1,4 @@
-package c24.thriftshop.stripe.demo.domain.Customer;
+package c24.thriftshop.stripe.demo.domain.customer;
 
 public class Balance {
     int balance;

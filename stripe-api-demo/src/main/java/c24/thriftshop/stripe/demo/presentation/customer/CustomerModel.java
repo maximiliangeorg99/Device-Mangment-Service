@@ -1,8 +1,8 @@
-package c24.thriftshop.stripe.demo.presentation.Customer;
+package c24.thriftshop.stripe.demo.presentation.customer;
 
-import c24.thriftshop.stripe.demo.domain.Customer.Customer;
-import c24.thriftshop.stripe.demo.domain.Customer.Email;
-import c24.thriftshop.stripe.demo.domain.Customer.Phone;
+import c24.thriftshop.stripe.demo.domain.Email;
+import c24.thriftshop.stripe.demo.domain.customer.Customer;
+import c24.thriftshop.stripe.demo.domain.customer.Phone;
 
 import java.text.DecimalFormat;
 

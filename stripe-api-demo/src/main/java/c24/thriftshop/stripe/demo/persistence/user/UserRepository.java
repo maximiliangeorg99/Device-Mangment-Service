@@ -1,4 +1,4 @@
-package c24.thriftshop.stripe.demo.persistence.User;
+package c24.thriftshop.stripe.demo.persistence.user;
 
 import c24.thriftshop.stripe.demo.persistence.CrudRepository;
 

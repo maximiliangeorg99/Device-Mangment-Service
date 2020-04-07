@@ -1,6 +1,6 @@
-package c24.thriftshop.stripe.demo.persistence.Customer;
+package c24.thriftshop.stripe.demo.persistence.customer;
 
-import c24.thriftshop.stripe.demo.domain.Customer.Customer;
+import c24.thriftshop.stripe.demo.domain.customer.Customer;
 
 public class StripeCustomer {
     private String id;

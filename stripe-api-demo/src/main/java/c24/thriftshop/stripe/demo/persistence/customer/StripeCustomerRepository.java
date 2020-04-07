@@ -1,4 +1,4 @@
-package c24.thriftshop.stripe.demo.persistence.Customer;
+package c24.thriftshop.stripe.demo.persistence.customer;
 
 import com.google.gson.Gson;
 import kong.unirest.HttpResponse;
