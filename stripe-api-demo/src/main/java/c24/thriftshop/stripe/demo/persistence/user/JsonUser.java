@@ -2,24 +2,49 @@ package c24.thriftshop.stripe.demo.persistence.user;
 
 import c24.thriftshop.stripe.demo.domain.user.User;
 
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class JsonUser {
     private final String email;
     private final String password;
     private final UUID id;
+    boolean isActive;
 
     public JsonUser(final String email, final String password) {
         this.id = UUID.randomUUID();
         this.email = email.toLowerCase();
         this.password = password;
+        this.isActive = true;
     }
 
     public JsonUser(final User user) {
         this.id = UUID.randomUUID();
         this.email = user.getEmail().getEmailAsString();
-        this.password = new String(user.getPassword().getHash(), StandardCharsets.UTF_8);
+        this.password = user.getPassword().getHash();
+        this.isActive = true;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final JsonUser jsonUser = (JsonUser) o;
+
+        return id.equals(jsonUser.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(final boolean active) {
+        isActive = active;
     }
 
     public String getEmail() {

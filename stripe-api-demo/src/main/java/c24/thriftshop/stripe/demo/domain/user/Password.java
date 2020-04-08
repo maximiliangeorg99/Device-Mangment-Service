@@ -1,5 +1,7 @@
 package c24.thriftshop.stripe.demo.domain.user;
 
+import c24.thriftshop.stripe.demo.util.Converter;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -8,24 +10,25 @@ import java.security.SecureRandom;
 
 public class Password {
     //hash und salt als String
-    private final byte[] hash;
-    private final byte[] salt;
+    private final String hash;
+    private final String salt;
     MessageDigest messageDigest;
 
     public Password(final String password) {
-        salt = new byte[20];
-        new SecureRandom().nextBytes(salt);
+        final byte[] saltBytes = new byte[20];
+        new SecureRandom().nextBytes(saltBytes);
         try {
             messageDigest = MessageDigest.getInstance("SHA-256");
         } catch (final NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        final String SaltString = new String(salt, StandardCharsets.UTF_8);
-        final String StringToHash = password + SaltString;
-        hash = messageDigest.digest(StringToHash.getBytes(StandardCharsets.UTF_8));
+        salt = new Converter().bytesToHex(saltBytes);
+        final String StringToHash = password + salt;
+        final byte[] hashBytes = messageDigest.digest(StringToHash.getBytes(StandardCharsets.UTF_8));
+        hash = new Converter().bytesToHex(hashBytes);
     }
 
-    public byte[] getHash() {
+    public String getHash() {
         return hash;
     }
 }

@@ -1,16 +1,21 @@
 package c24.thriftshop.stripe.demo.presentation;
 
-import c24.thriftshop.stripe.demo.domain.user.User;
-import c24.thriftshop.stripe.demo.persistence.user.JsonUser;
+import c24.thriftshop.stripe.demo.domain.user.UserService;
 import c24.thriftshop.stripe.demo.persistence.user.JsonUserRepository;
+
+import java.util.Scanner;
 
 public class Main {
     public static void main(final String[] args) {
         final JsonUserRepository jsonUserRepository = new JsonUserRepository();
-        final User user = new User("Max@web.de", "12345678");
-        final User user2 = new User("Maximilian@web.de", "12345678");
-        jsonUserRepository.save(new JsonUser(user));
-        jsonUserRepository.save(new JsonUser(user2));
-        jsonUserRepository.delete(new JsonUser(user));
+        final Scanner scanner = new Scanner(System.in);
+        System.out.println("Registration:");
+        System.out.println("Please enter Email and Password");
+        System.out.print("Email: ");
+        final String email = scanner.next();
+        System.out.print("Password: ");
+        final String password = scanner.next();
+        final UserService userService = new UserService(jsonUserRepository);
+        userService.registerUser(email, password);
     }
 }

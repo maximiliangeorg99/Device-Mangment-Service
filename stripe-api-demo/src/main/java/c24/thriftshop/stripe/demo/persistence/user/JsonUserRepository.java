@@ -9,90 +9,103 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class JsonUserRepository implements UserRepository {
     private final File DB = new File("C:\\dev\\training\\Device-Managment-Service\\stripe-api-demo\\src\\main\\java\\c24\\thriftshop\\stripe\\demo\\persistence\\User\\JsonFiles", "users.json");
-
     Gson gson = new Gson();
+    private FileWriter fileWriter;
+    private Scanner scanner;
 
     public JsonUserRepository() {
         final JsonUsers jsonUsers = new JsonUsers();
         try {
-            final FileWriter writer = new FileWriter(DB);
-            writer.write(gson.toJson(jsonUsers));
-            writer.flush();
+            fileWriter = new FileWriter(DB);
+            fileWriter.write(gson.toJson(jsonUsers));
+            fileWriter.flush();
         } catch (final IOException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public Optional<JsonUser> findById(final String s) {
-        final Optional<JsonUser> optional;
-        try (final Scanner scanner = new Scanner(DB)) {
-            final JsonUsers jsonUsers = gson.fromJson(scanner.nextLine(), JsonUsers.class);
-            for (final JsonUser jsonUser : jsonUsers.list) {
-                if (jsonUser.getEmail().equalsIgnoreCase(s)) {
-                    optional = Optional.of(jsonUser);
-                } else {
-                    optional = Optional.empty();
-                }
-                return optional;
-            }
+    private JsonUsers readDB() {
+        try {
+            scanner = new Scanner(DB);
+            final String jsonString = scanner.nextLine();
+            return gson.fromJson(jsonString, JsonUsers.class);
         } catch (final FileNotFoundException e) {
             e.printStackTrace();
         }
-        //?
         return null;
+    }
+
+    private void writeDB(final JsonUsers jsonUsers) {
+        final String jsonStringWrite = gson.toJson(jsonUsers, JsonUsers.class);
+        try {
+            fileWriter = new FileWriter(DB);
+            fileWriter.write(jsonStringWrite);
+            fileWriter.flush();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void softDelete(final JsonUser entity) {
+        final JsonUsers jsonUsers = readDB();
+        for (final JsonUser jsonUser : jsonUsers.list) {
+            if (jsonUser.getId().equals(entity.getId())) {
+                jsonUser.setActive(false);
+                break;
+            }
+        }
+        writeDB(jsonUsers);
+    }
+
+    public Optional<JsonUser> findByEmail(final String email) {
+        final Optional<JsonUser> optional;
+        final JsonUsers jsonUsers = readDB();
+        for (final JsonUser jsonUser : jsonUsers.list) {
+            if (jsonUser.getEmail().equalsIgnoreCase(email)) {
+                optional = Optional.of(jsonUser);
+                return optional;
+            }
+        }
+        optional = Optional.empty();
+        return optional;
+    }
+
+    @Override
+    public Optional<JsonUser> findById(final UUID id) {
+        final Optional<JsonUser> optional;
+        final JsonUsers jsonUsers = readDB();
+        for (final JsonUser jsonUser : jsonUsers.list) {
+            if (jsonUser.getId().equals(id)) {
+                optional = Optional.of(jsonUser);
+                return optional;
+            }
+        }
+        optional = Optional.empty();
+        return optional;
     }
 
     @Override
     public Collection<JsonUser> findAll() {
-        try (final Scanner scanner = new Scanner(DB)) {
-            final JsonUsers jsonUsers = gson.fromJson(scanner.nextLine(), JsonUsers.class);
-            return jsonUsers.list;
-        } catch (final FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        //?
-        return null;
+        final JsonUsers jsonUsers = readDB();
+        return jsonUsers.list;
     }
 
     @Override
     public JsonUser save(final JsonUser entity) {
-        //simple slow implementation
-        try {
-            final Scanner s = new Scanner(DB);
-            final String jsonString = s.nextLine();
-            final JsonUsers jsonUsers = gson.fromJson(jsonString, JsonUsers.class);
-            jsonUsers.list.add(entity);
-            final String jsonStringWrite = gson.toJson(jsonUsers, JsonUsers.class);
-            final FileWriter writer = new FileWriter(DB);
-            writer.write(jsonStringWrite);
-            writer.flush();
-        } catch (final FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
+        final JsonUsers jsonUsers = readDB();
+        jsonUsers.list.add(entity);
+        writeDB(jsonUsers);
         return entity;
     }
 
     @Override
     public void delete(final JsonUser entity) {
-        try {
-            final Scanner s = new Scanner(DB);
-            final String jsonString = s.nextLine();
-            final JsonUsers jsonUsers = gson.fromJson(jsonString, JsonUsers.class);
-            jsonUsers.list.remove(entity);
-            final String jsonStringWrite = gson.toJson(jsonUsers, JsonUsers.class);
-            final FileWriter writer = new FileWriter(DB);
-            writer.write(jsonStringWrite);
-            writer.flush();
-        } catch (final FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
+        final JsonUsers jsonUsers = readDB();
+        jsonUsers.list.remove(entity);
+        writeDB(jsonUsers);
     }
 }

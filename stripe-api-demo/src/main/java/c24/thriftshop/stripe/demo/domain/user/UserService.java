@@ -11,23 +11,26 @@ public class UserService {
         this.jsonUserRepository = jsonUserRepository;
     }
 
-    //return if Registration was successful
-    public boolean registerUser(final User user) {
-        if (emailExists(user.getEmail())) {
+    public boolean registerUser(final String email, final String password) {
+        if (emailExists(new Email(email))) {
             //Error
             return false;
         } else {
+            final User user = new User(email, password);
             jsonUserRepository.save(new JsonUser(user));
             return true;
         }
     }
 
-    //return if Login was successful
-    public boolean loginUser(final User user) {
-        return emailExists(user.getEmail());
+    public boolean loginUser(final String email, final String password) {
+        return emailExists(new Email(email));
     }
 
     private boolean emailExists(final Email email) {
+        return jsonUserRepository.findByEmail(email.getEmailAsString()).isPresent();
+    }
+
+    private boolean isValidPassword(final Password password) {
         return false;
     }
 }
