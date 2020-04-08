@@ -20,7 +20,6 @@ public class Password {
     }
 
     public Password(final String password, final String salt) {
-        String hash1;
         this.salt = salt;
         try {
             messageDigest = MessageDigest.getInstance("SHA-256");
@@ -29,9 +28,7 @@ public class Password {
         }
         final String StringToHash = password;
         final byte[] hashBytes = messageDigest.digest(StringToHash.getBytes(StandardCharsets.UTF_8));
-        hash1 = new Converter().bytesToHex(hashBytes);
-        hash1 = hash1 + salt;
-        hash = hash1;
+        hash = new Converter().bytesToHex(hashBytes) + salt;
     }
 
     public static String generateRandomSalt() {
