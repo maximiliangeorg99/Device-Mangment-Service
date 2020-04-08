@@ -7,6 +7,7 @@ import java.util.UUID;
 public class JsonUser {
     private final String email;
     private final String password;
+    private final String salt;
     private final UUID id;
     boolean isActive;
 
@@ -15,6 +16,7 @@ public class JsonUser {
         this.email = email.toLowerCase();
         this.password = password;
         this.isActive = true;
+        this.salt = "";
     }
 
     public JsonUser(final User user) {
@@ -22,6 +24,11 @@ public class JsonUser {
         this.email = user.getEmail().getEmailAsString();
         this.password = user.getPassword().getHash();
         this.isActive = true;
+        this.salt = user.getPassword().getSalt();
+    }
+
+    public String getSalt() {
+        return salt;
     }
 
     @Override

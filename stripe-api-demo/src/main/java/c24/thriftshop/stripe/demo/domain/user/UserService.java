@@ -37,8 +37,9 @@ public class UserService {
 
     private boolean checkPassword(final String email, final String password) {
         final User user = new User(jsonUserRepository.findByEmail(email).get());
+        final String salt = jsonUserRepository.findByEmail(email).get().getSalt();
         final Password a = user.getPassword();
-        final Password b = new Password(password, a.getSalt());
+        final Password b = new Password(password, salt);
         return a.equals(b);
     }
 

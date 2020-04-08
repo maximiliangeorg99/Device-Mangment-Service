@@ -26,9 +26,9 @@ public class Password {
         } catch (final NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        final String StringToHash = password;
+        final String StringToHash = password + salt;
         final byte[] hashBytes = messageDigest.digest(StringToHash.getBytes(StandardCharsets.UTF_8));
-        hash = new Converter().bytesToHex(hashBytes) + salt;
+        hash = new Converter().bytesToHex(hashBytes);
     }
 
     public static String generateRandomSalt() {
