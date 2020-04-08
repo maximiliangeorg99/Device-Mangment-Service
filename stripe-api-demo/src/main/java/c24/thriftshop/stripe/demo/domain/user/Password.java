@@ -15,17 +15,48 @@ public class Password {
     MessageDigest messageDigest;
 
     public Password(final String password) {
-        final byte[] saltBytes = new byte[20];
-        new SecureRandom().nextBytes(saltBytes);
+        this.hash = password;
+        this.salt = password.substring(password.length() - 40);
+    }
+
+    public Password(final String password, final String salt) {
+        String hash1;
+        this.salt = salt;
         try {
             messageDigest = MessageDigest.getInstance("SHA-256");
         } catch (final NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        salt = new Converter().bytesToHex(saltBytes);
-        final String StringToHash = password + salt;
+        final String StringToHash = password;
         final byte[] hashBytes = messageDigest.digest(StringToHash.getBytes(StandardCharsets.UTF_8));
-        hash = new Converter().bytesToHex(hashBytes);
+        hash1 = new Converter().bytesToHex(hashBytes);
+        hash1 = hash1 + salt;
+        hash = hash1;
+    }
+
+    public static String generateRandomSalt() {
+        final byte[] saltBytes = new byte[20];
+        new SecureRandom().nextBytes(saltBytes);
+        return new Converter().bytesToHex(saltBytes);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Password password = (Password) o;
+
+        return hash != null ? hash.equals(password.hash) : password.hash == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return hash != null ? hash.hashCode() : 0;
+    }
+
+    public String getSalt() {
+        return salt;
     }
 
     public String getHash() {

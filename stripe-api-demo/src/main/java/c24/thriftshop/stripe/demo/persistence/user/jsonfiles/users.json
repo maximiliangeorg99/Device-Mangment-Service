@@ -1,10 +1,1 @@
-{
-  "list": [
-    {
-      "email": "hans@gmail.com",
-      "password": "767d9c75464ca549dba943bc8ddc0dbaab18f01f7cc9962a66134f062ec318d4",
-      "id": "8e53fe12-e488-44b5-b7bb-50897d104106",
-      "isActive": true
-    }
-  ]
-}
+{"list":[{"email":"hi@web.de","password":"f9e18e5428fcd197c72869375154f7c830be2729e163def13e0e3574ba6fd3d721486a082824d00cadce3b5975a150d1884e0362","id":"877d78d8-daf5-4a3b-afb5-a10b486fdbbf","isActive":true},{"email":"max@web.de","password":"260e5b04ca2f5684aaf1aed47f07664dfc868401e70bb917977f83b0c4cab22d428fa0594db7e06e05e57f73dee7ee373f50987d","id":"eb363d20-bd7e-4c62-b0f5-be85b27f436d","isActive":true}]}

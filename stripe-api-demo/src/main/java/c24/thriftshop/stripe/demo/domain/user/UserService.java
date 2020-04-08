@@ -11,26 +11,55 @@ public class UserService {
         this.jsonUserRepository = jsonUserRepository;
     }
 
-    public boolean registerUser(final String email, final String password) {
+    public RegistrationState registerUser(final String email, final String password) {
         if (emailExists(new Email(email))) {
-            //Error
-            return false;
+            return RegistrationState.EmailAlreadyExists;
+        } else if (!isValidPassword(password)) {
+            return RegistrationState.WeakPassword;
+        } else if (!isValidEmailAddressString(email)) {
+            return RegistrationState.NotValidEmail;
         } else {
             final User user = new User(email, password);
             jsonUserRepository.save(new JsonUser(user));
-            return true;
+            return RegistrationState.Successful;
         }
     }
 
-    public boolean loginUser(final String email, final String password) {
-        return emailExists(new Email(email));
+    public LoginState loginUser(final String email, final String password) {
+        if (!emailExists(new Email(email))) {
+            return LoginState.EmailDoesNotExist;
+        } else if (!checkPassword(email, password)) {
+            return LoginState.WrongPassword;
+        } else {
+            return LoginState.Successful;
+        }
+    }
+
+    private boolean checkPassword(final String email, final String password) {
+        final User user = new User(jsonUserRepository.findByEmail(email).get());
+        final Password a = user.getPassword();
+        final Password b = new Password(password, a.getSalt());
+        return a.equals(b);
     }
 
     private boolean emailExists(final Email email) {
         return jsonUserRepository.findByEmail(email.getEmailAsString()).isPresent();
     }
 
-    private boolean isValidPassword(final Password password) {
-        return false;
+    private boolean isValidPassword(final String password) {
+        final boolean minLength = password.length() >= 8;
+        final boolean hasUppercase = !password.equals(password.toLowerCase());
+        final boolean hasLowercase = !password.equals(password.toUpperCase());
+        final boolean hasSpecial = !password.matches("[A-Za-z0-9 ]*");//Checks at least one char is not alpha numeric
+        final boolean hasNumbers = !password.matches("[A-Za-z]*");
+        final boolean hasLetters = !password.matches("[0-9]*");
+        return minLength && hasUppercase && hasLowercase && hasSpecial && hasNumbers && hasLetters;
+    }
+
+    private boolean isValidEmailAddressString(final String email) {
+        final String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        final java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        final java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
     }
 }

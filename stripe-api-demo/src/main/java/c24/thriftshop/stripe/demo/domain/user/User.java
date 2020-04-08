@@ -18,7 +18,7 @@ public class User {
 
     public User(final String email, final String password) {
         this.email = new Email(email);
-        this.password = new Password(password);
+        this.password = new Password(password, Password.generateRandomSalt());
         id = UUID.randomUUID();
     }
 
