@@ -9,14 +9,21 @@ import java.security.SecureRandom;
 
 
 public class Password {
-    //hash und salt als String
+
     private final String hash;
     private final String salt;
     MessageDigest messageDigest;
 
     public Password(final String password) {
-        this.hash = password;
-        this.salt = password.substring(password.length() - 40);
+        this.salt = generateRandomSalt();
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+        } catch (final NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        final String StringToHash = password + salt;
+        final byte[] hashBytes = messageDigest.digest(StringToHash.getBytes(StandardCharsets.UTF_8));
+        hash = new Converter().bytesToHex(hashBytes);
     }
 
     public Password(final String password, final String salt) {

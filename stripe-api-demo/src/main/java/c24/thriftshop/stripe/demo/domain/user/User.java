@@ -12,13 +12,14 @@ public class User {
 
     public User(final JsonUser jsonUser) {
         email = new Email(jsonUser.getEmail());
-        password = new Password(jsonUser.getPassword());
+        //TODO Crappy implementation
+        password = new Password(jsonUser.getPassword(), jsonUser.getSalt());
         id = UUID.randomUUID();
     }
 
     public User(final String email, final String password) {
         this.email = new Email(email);
-        this.password = new Password(password, Password.generateRandomSalt());
+        this.password = new Password(password);
         id = UUID.randomUUID();
     }
 
