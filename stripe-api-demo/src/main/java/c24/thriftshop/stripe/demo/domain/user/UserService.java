@@ -1,14 +1,14 @@
 package c24.thriftshop.stripe.demo.domain.user;
 
 import c24.thriftshop.stripe.demo.domain.Email;
-import c24.thriftshop.stripe.demo.persistence.user.JsonUser;
-import c24.thriftshop.stripe.demo.persistence.user.JsonUserRepository;
+import c24.thriftshop.stripe.demo.persistence.user.UserEntity;
+import c24.thriftshop.stripe.demo.persistence.user.UserRepository;
 
 public class UserService {
-    private final JsonUserRepository jsonUserRepository;
+    private final UserRepository userRepository;
 
-    public UserService(final JsonUserRepository jsonUserRepository) {
-        this.jsonUserRepository = jsonUserRepository;
+    public UserService(final UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public RegistrationState registerUser(final String email, final String password) {
@@ -20,7 +20,7 @@ public class UserService {
             return RegistrationState.NotValidEmail;
         } else {
             final User user = new User(email, password);
-            jsonUserRepository.save(new JsonUser(user));
+            userRepository.save(new UserEntity(user));
             return RegistrationState.Successful;
         }
     }
@@ -38,8 +38,8 @@ public class UserService {
     //TODO Crappy implementation
     private boolean checkPassword(final String email, final String password) {
         //should be safe because email was already found in DB
-        final User user = new User(jsonUserRepository.findByEmail(email).get());
-        final String salt = jsonUserRepository.findByEmail(email).get().getSalt();
+        final User user = new User(userRepository.findByEmail(email).get());
+        final String salt = userRepository.findByEmail(email).get().getSalt();
         final Password a = user.getPassword();
         Password b = new Password(password, salt);
         b = new Password(b.getHash(), salt);
@@ -47,7 +47,7 @@ public class UserService {
     }
 
     private boolean emailExists(final Email email) {
-        return jsonUserRepository.findByEmail(email.getEmailAsString()).isPresent();
+        return userRepository.findByEmail(email.getEmailAsString()).isPresent();
     }
 
     private boolean isValidPassword(final String password) {

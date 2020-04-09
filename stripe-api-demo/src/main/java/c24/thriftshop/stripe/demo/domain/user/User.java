@@ -1,7 +1,7 @@
 package c24.thriftshop.stripe.demo.domain.user;
 
 import c24.thriftshop.stripe.demo.domain.Email;
-import c24.thriftshop.stripe.demo.persistence.user.JsonUser;
+import c24.thriftshop.stripe.demo.persistence.user.UserEntity;
 
 import java.util.UUID;
 
@@ -10,10 +10,10 @@ public class User {
     private final Password password;
     private final UUID id;
 
-    public User(final JsonUser jsonUser) {
-        email = new Email(jsonUser.getEmail());
+    public User(final UserEntity userEntity) {
+        email = new Email(userEntity.getEmail());
         //TODO Crappy implementation
-        password = new Password(jsonUser.getPassword(), jsonUser.getSalt());
+        password = new Password(userEntity.getPassword(), userEntity.getSalt());
         id = UUID.randomUUID();
     }
 

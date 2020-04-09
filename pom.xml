@@ -11,6 +11,7 @@
    <modules>
       <module>console</module>
       <module>stripe-api-demo</module>
+      <module>web-spring</module>
    </modules>
 
    <properties>

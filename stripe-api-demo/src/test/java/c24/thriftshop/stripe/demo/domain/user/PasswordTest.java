@@ -30,15 +30,14 @@ public class PasswordTest {
         assertThat(password).isNotEqualTo(password1);
     }
 
-    //TODO Timer Klasse implementieren
     @Test
     public void testPerformance() throws InterruptedException {
         testTimer.start();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
             final UUID id = UUID.randomUUID();
             final Password password = new Password(id.toString());
         }
         testTimer.stop();
-        assertThat(testTimer.getTimeInSeconds()).isLessThan(1);
+        assertThat(testTimer.getTimeInSeconds()).isLessThan(10);
     }
 }

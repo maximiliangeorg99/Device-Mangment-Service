@@ -4,14 +4,14 @@ import c24.thriftshop.stripe.demo.domain.user.User;
 
 import java.util.UUID;
 
-public class JsonUser {
+public class UserEntity {
     private final String email;
     private final String password;
     private final String salt;
     private final UUID id;
     boolean isActive;
 
-    public JsonUser(final String email, final String password) {
+    public UserEntity(final String email, final String password) {
         this.id = UUID.randomUUID();
         this.email = email.toLowerCase();
         this.password = password;
@@ -19,7 +19,7 @@ public class JsonUser {
         this.salt = "";
     }
 
-    public JsonUser(final User user) {
+    public UserEntity(final User user) {
         this.id = UUID.randomUUID();
         this.email = user.getEmail().getEmailAsString();
         this.password = user.getPassword().getHash();
@@ -36,9 +36,9 @@ public class JsonUser {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        final JsonUser jsonUser = (JsonUser) o;
+        final UserEntity userEntity = (UserEntity) o;
 
-        return id.equals(jsonUser.id);
+        return id.equals(userEntity.id);
     }
 
     @Override

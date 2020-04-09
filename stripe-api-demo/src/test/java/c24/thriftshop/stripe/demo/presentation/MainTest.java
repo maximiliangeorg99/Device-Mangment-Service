@@ -3,20 +3,20 @@ package c24.thriftshop.stripe.demo.presentation;
 import c24.thriftshop.stripe.demo.domain.user.LoginState;
 import c24.thriftshop.stripe.demo.domain.user.RegistrationState;
 import c24.thriftshop.stripe.demo.domain.user.UserService;
-import c24.thriftshop.stripe.demo.persistence.user.JsonUserRepository;
-import org.junit.BeforeClass;
+import c24.thriftshop.stripe.demo.persistence.user.InMemoryUserRepository;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MainTest {
-    static JsonUserRepository jsonUserRepository;
+    static InMemoryUserRepository inMemoryUserRepository;
     static UserService userService;
 
-    @BeforeClass
-    public static void beforeClass() throws Exception {
-        jsonUserRepository = new JsonUserRepository();
-        userService = new UserService(jsonUserRepository);
+    @Before
+    public void setUp() throws Exception {
+        inMemoryUserRepository = new InMemoryUserRepository();
+        userService = new UserService(inMemoryUserRepository);
     }
 
     @Test
@@ -84,11 +84,18 @@ public class MainTest {
     }
 
     @Test
-    public void testLoginNotRegistered() {
+    public void testLoginSuccessfulAfterRegistration() {
         final String email = "max.georg@web.de";
         final String pw = "Password1234!";
         userService.registerUser(email, pw);
         assertThat(userService.loginUser(email, pw)).isEqualTo(LoginState.Successful);
+    }
+
+    @Test
+    public void testLoginNotRegenerated() {
+        final String email = "max.georg@web.de";
+        final String pw = "Password1234!";
+        assertThat(userService.loginUser(email, pw)).isEqualTo(LoginState.EmailDoesNotExist);
     }
 
     @Test

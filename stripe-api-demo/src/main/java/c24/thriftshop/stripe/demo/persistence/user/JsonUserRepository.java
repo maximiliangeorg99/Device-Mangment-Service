@@ -18,29 +18,29 @@ public class JsonUserRepository implements UserRepository {
     private Scanner scanner;
 
     public JsonUserRepository() {
-        final JsonUsers jsonUsers = new JsonUsers();
+        final UserEntities userEntities = new UserEntities();
         try {
             fileWriter = new FileWriter(DB);
-            fileWriter.write(gson.toJson(jsonUsers));
+            fileWriter.write(gson.toJson(userEntities));
             fileWriter.flush();
         } catch (final IOException e) {
             e.printStackTrace();
         }
     }
 
-    private JsonUsers readDB() {
+    private UserEntities readDB() {
         try {
             scanner = new Scanner(DB);
             final String jsonString = scanner.nextLine();
-            return gson.fromJson(jsonString, JsonUsers.class);
+            return gson.fromJson(jsonString, UserEntities.class);
         } catch (final FileNotFoundException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    private void writeDB(final JsonUsers jsonUsers) {
-        final String jsonStringWrite = gson.toJson(jsonUsers, JsonUsers.class);
+    private void writeDB(final UserEntities userEntities) {
+        final String jsonStringWrite = gson.toJson(userEntities, UserEntities.class);
         try {
             fileWriter = new FileWriter(DB);
             fileWriter.write(jsonStringWrite);
@@ -50,23 +50,25 @@ public class JsonUserRepository implements UserRepository {
         }
     }
 
-    public void softDelete(final JsonUser entity) {
-        final JsonUsers jsonUsers = readDB();
-        for (final JsonUser jsonUser : jsonUsers.list) {
-            if (jsonUser.getId().equals(entity.getId())) {
-                jsonUser.setActive(false);
+    @Override
+    public void softDelete(final UserEntity entity) {
+        final UserEntities userEntities = readDB();
+        for (final UserEntity userEntity : userEntities.list) {
+            if (userEntity.getId().equals(entity.getId())) {
+                userEntity.setActive(false);
                 break;
             }
         }
-        writeDB(jsonUsers);
+        writeDB(userEntities);
     }
 
-    public Optional<JsonUser> findByEmail(final String email) {
-        final Optional<JsonUser> optional;
-        final JsonUsers jsonUsers = readDB();
-        for (final JsonUser jsonUser : jsonUsers.list) {
-            if (jsonUser.getEmail().equalsIgnoreCase(email)) {
-                optional = Optional.of(jsonUser);
+    @Override
+    public Optional<UserEntity> findByEmail(final String email) {
+        final Optional<UserEntity> optional;
+        final UserEntities userEntities = readDB();
+        for (final UserEntity userEntity : userEntities.list) {
+            if (userEntity.getEmail().equalsIgnoreCase(email) && userEntity.isActive()) {
+                optional = Optional.of(userEntity);
                 return optional;
             }
         }
@@ -75,12 +77,12 @@ public class JsonUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<JsonUser> findById(final UUID id) {
-        final Optional<JsonUser> optional;
-        final JsonUsers jsonUsers = readDB();
-        for (final JsonUser jsonUser : jsonUsers.list) {
-            if (jsonUser.getId().equals(id)) {
-                optional = Optional.of(jsonUser);
+    public Optional<UserEntity> findById(final UUID id) {
+        final Optional<UserEntity> optional;
+        final UserEntities userEntities = readDB();
+        for (final UserEntity userEntity : userEntities.list) {
+            if (userEntity.getId().equals(id) && userEntity.isActive()) {
+                optional = Optional.of(userEntity);
                 return optional;
             }
         }
@@ -89,23 +91,23 @@ public class JsonUserRepository implements UserRepository {
     }
 
     @Override
-    public Collection<JsonUser> findAll() {
-        final JsonUsers jsonUsers = readDB();
-        return jsonUsers.list;
+    public Collection<UserEntity> findAll() {
+        final UserEntities userEntities = readDB();
+        return userEntities.list;
     }
 
     @Override
-    public JsonUser save(final JsonUser entity) {
-        final JsonUsers jsonUsers = readDB();
-        jsonUsers.list.add(entity);
-        writeDB(jsonUsers);
+    public UserEntity save(final UserEntity entity) {
+        final UserEntities userEntities = readDB();
+        userEntities.list.add(entity);
+        writeDB(userEntities);
         return entity;
     }
 
     @Override
-    public void delete(final JsonUser entity) {
-        final JsonUsers jsonUsers = readDB();
-        jsonUsers.list.remove(entity);
-        writeDB(jsonUsers);
+    public void delete(final UserEntity entity) {
+        final UserEntities userEntities = readDB();
+        userEntities.list.remove(entity);
+        writeDB(userEntities);
     }
 }

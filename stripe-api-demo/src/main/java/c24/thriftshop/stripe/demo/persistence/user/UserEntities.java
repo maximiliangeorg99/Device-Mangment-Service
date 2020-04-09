@@ -2,10 +2,10 @@ package c24.thriftshop.stripe.demo.persistence.user;
 
 import java.util.ArrayList;
 
-public class JsonUsers {
-    ArrayList<JsonUser> list;
+public class UserEntities {
+    ArrayList<UserEntity> list;
 
-    public JsonUsers() {
+    public UserEntities() {
         list = new ArrayList<>();
     }
 }
