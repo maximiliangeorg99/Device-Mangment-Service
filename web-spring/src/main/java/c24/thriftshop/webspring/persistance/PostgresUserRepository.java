@@ -21,12 +21,13 @@ public class PostgresUserRepository implements UserRepository {
     //TODO Crappy implementation dont use empty catch block
     @Override
     public Optional<UserEntity> findByEmail(final String email) {
-        final String sql = "SELECT email,password FROM \"user\" WHERE email = ?";
+        final String sql = "SELECT email,password,salt FROM \"user\" WHERE email = ?";
         UserEntity userEntity = null;
         try {
             userEntity = jdbcTemplate.queryForObject(sql, new Object[]{email}, (resultSet, i) -> {
                 return new UserEntity(resultSet.getString("email"),
-                        resultSet.getString("password")
+                        resultSet.getString("password"),
+                        resultSet.getString("salt")
                 );
             });
         } catch (final Exception ex) {
@@ -44,10 +45,11 @@ public class PostgresUserRepository implements UserRepository {
 
     @Override
     public Optional<UserEntity> findById(final UUID uuid) {
-        final String sql = "SELECT email,password FROM \"user\" WHERE id = ?";
+        final String sql = "SELECT email,password,salt FROM \"user\" WHERE id = ?";
         final UserEntity userEntity = jdbcTemplate.queryForObject(sql, new Object[]{uuid}, (resultSet, i) -> {
             return new UserEntity(resultSet.getString("email"),
-                    resultSet.getString("password")
+                    resultSet.getString("password"),
+                    resultSet.getString("salt")
             );
         });
         return Optional.ofNullable(userEntity);
@@ -65,8 +67,8 @@ public class PostgresUserRepository implements UserRepository {
 
     @Override
     public UserEntity save(final UserEntity entity) {
-        final String sql = "INSERT INTO \"user\" VALUES(?,?,?,?)";
-        jdbcTemplate.update(sql, entity.getId(), entity.getEmail(), entity.getPassword(), entity.isActive());
+        final String sql = "INSERT INTO \"user\" VALUES(?,?,?,?,?)";
+        jdbcTemplate.update(sql, entity.getId(), entity.getEmail(), entity.getPassword(), entity.isActive(), entity.getSalt());
         return entity;
     }
 

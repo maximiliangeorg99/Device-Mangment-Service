@@ -28,7 +28,7 @@ public class UserService {
         } else if (!isValidEmailAddressString(email)) {
             return RegistrationState.NotValidEmail;
         } else {
-            final User user = new User(email, password);
+            final User user = new User(email.toLowerCase(), password);
             userRepository.save(new UserEntity(user));
             return RegistrationState.Successful;
         }
