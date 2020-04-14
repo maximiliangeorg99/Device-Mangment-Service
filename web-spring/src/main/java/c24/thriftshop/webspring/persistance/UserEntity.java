@@ -12,19 +12,12 @@ public class UserEntity {
     boolean isActive;
 
     //TODO remove Constructor Chaos
-    public UserEntity(final String email, final String password) {
-        this.id = UUID.randomUUID();
+    //flat copy
+    public UserEntity(final String email, final String password, final String salt, final UUID id, final boolean isActive) {
+        this.id = id;
         this.email = email.toLowerCase();
         this.password = password;
-        this.isActive = true;
-        this.salt = "";
-    }
-
-    public UserEntity(final String email, final String password, final String salt) {
-        this.id = UUID.randomUUID();
-        this.email = email.toLowerCase();
-        this.password = password;
-        this.isActive = true;
+        this.isActive = isActive;
         this.salt = salt;
     }
 

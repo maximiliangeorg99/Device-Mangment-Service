@@ -21,13 +21,15 @@ public class PostgresUserRepository implements UserRepository {
     //TODO Crappy implementation dont use empty catch block
     @Override
     public Optional<UserEntity> findByEmail(final String email) {
-        final String sql = "SELECT email,password,salt FROM \"user\" WHERE email = ?";
+        final String sql = "SELECT * FROM \"user\" WHERE email = ?";
         UserEntity userEntity = null;
         try {
             userEntity = jdbcTemplate.queryForObject(sql, new Object[]{email}, (resultSet, i) -> {
                 return new UserEntity(resultSet.getString("email"),
                         resultSet.getString("password"),
-                        resultSet.getString("salt")
+                        resultSet.getString("salt"),
+                        resultSet.getObject("id", UUID.class),
+                        resultSet.getBoolean("isactive")
                 );
             });
         } catch (final Exception ex) {
@@ -45,11 +47,13 @@ public class PostgresUserRepository implements UserRepository {
 
     @Override
     public Optional<UserEntity> findById(final UUID uuid) {
-        final String sql = "SELECT email,password,salt FROM \"user\" WHERE id = ?";
+        final String sql = "SELECT * FROM \"user\" WHERE id = ?";
         final UserEntity userEntity = jdbcTemplate.queryForObject(sql, new Object[]{uuid}, (resultSet, i) -> {
             return new UserEntity(resultSet.getString("email"),
                     resultSet.getString("password"),
-                    resultSet.getString("salt")
+                    resultSet.getString("salt"),
+                    resultSet.getObject("id", UUID.class),
+                    resultSet.getBoolean("isactive")
             );
         });
         return Optional.ofNullable(userEntity);
@@ -57,10 +61,13 @@ public class PostgresUserRepository implements UserRepository {
 
     @Override
     public Collection<UserEntity> findAll() {
-        final String sql = "SELECT email,password FROM \"user\"";
+        final String sql = "SELECT * FROM \"user\"";
         return jdbcTemplate.query(sql, (resultSet, i) -> {
             return new UserEntity(resultSet.getString("email"),
-                    resultSet.getString("password")
+                    resultSet.getString("password"),
+                    resultSet.getString("salt"),
+                    resultSet.getObject("id", UUID.class),
+                    resultSet.getBoolean("isactive")
             );
         });
     }
