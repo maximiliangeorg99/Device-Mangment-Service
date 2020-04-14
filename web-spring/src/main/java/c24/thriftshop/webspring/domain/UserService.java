@@ -10,8 +10,13 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
 
+    //@Autowired
+    //public UserService(@Qualifier("InMemoryDB") final UserRepository userRepository) {
+    //    this.userRepository = userRepository;
+    //}
+
     @Autowired
-    public UserService(@Qualifier("InMemoryDB") final UserRepository userRepository) {
+    public UserService(@Qualifier("postgres") final UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
