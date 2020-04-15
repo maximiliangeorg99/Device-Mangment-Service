@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository("postgres")
+@Repository("userPostgres")
 public class PostgresUserRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
