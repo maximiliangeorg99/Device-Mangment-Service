@@ -18,13 +18,12 @@ public class PostgresUserRepository implements UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    //TODO Crappy implementation dont use empty catch block
     @Override
     public Optional<UserEntity> findByEmail(final String email) {
-        final String sql = "SELECT * FROM \"user\" WHERE email = ?";
+        final String sql = "SELECT * FROM \"user\" WHERE email = ? AND isactive = true";
         UserEntity userEntity = null;
         try {
-            userEntity = jdbcTemplate.queryForObject(sql, new Object[]{email}, (resultSet, i) -> {
+            userEntity = jdbcTemplate.queryForObject(sql, new Object[]{email.toLowerCase()}, (resultSet, i) -> {
                 return new UserEntity(resultSet.getString("email"),
                         resultSet.getString("password"),
                         resultSet.getString("salt"),
@@ -47,7 +46,7 @@ public class PostgresUserRepository implements UserRepository {
 
     @Override
     public Optional<UserEntity> findById(final UUID uuid) {
-        final String sql = "SELECT * FROM \"user\" WHERE id = ?";
+        final String sql = "SELECT * FROM \"user\" WHERE id = ? AND isactive = true";
         final UserEntity userEntity = jdbcTemplate.queryForObject(sql, new Object[]{uuid}, (resultSet, i) -> {
             return new UserEntity(resultSet.getString("email"),
                     resultSet.getString("password"),
