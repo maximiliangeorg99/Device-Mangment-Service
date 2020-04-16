@@ -1,4 +1,6 @@
-package c24.thriftshop.webspring.persistance;
+package c24.thriftshop.webspring.persistance.device;
+
+import c24.thriftshop.webspring.domain.device.Device;
 
 import java.util.UUID;
 
@@ -17,6 +19,15 @@ public class DeviceEntity {
         this.email = email;
         this.rentDate = rentDate;
         this.returnDate = returnDate;
+    }
+
+    public DeviceEntity(final Device device) {
+        this.id = device.getId();
+        this.name = device.getName();
+        this.available = device.isAvailable();
+        this.email = device.getEmail().getEmailAsString();
+        this.rentDate = device.getRentDate();
+        this.returnDate = device.getReturnDate();
     }
 
     public UUID getId() {

@@ -1,4 +1,4 @@
-package c24.thriftshop.webspring.domain;
+package c24.thriftshop.webspring.domain.device;
 
 public enum DeviceState {
     DontOwnDevice, NotAvailable, Available;

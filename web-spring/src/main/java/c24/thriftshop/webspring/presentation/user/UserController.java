@@ -1,6 +1,6 @@
-package c24.thriftshop.webspring.presentation;
+package c24.thriftshop.webspring.presentation.user;
 
-import c24.thriftshop.webspring.domain.UserService;
+import c24.thriftshop.webspring.domain.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

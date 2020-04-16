@@ -1,6 +1,6 @@
-package c24.thriftshop.webspring.persistance;
+package c24.thriftshop.webspring.persistance.user;
 
-import c24.thriftshop.webspring.domain.User;
+import c24.thriftshop.webspring.domain.user.User;
 
 import java.util.UUID;
 

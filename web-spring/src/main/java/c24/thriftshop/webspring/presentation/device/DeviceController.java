@@ -1,6 +1,6 @@
-package c24.thriftshop.webspring.presentation;
+package c24.thriftshop.webspring.presentation.device;
 
-import c24.thriftshop.webspring.domain.DeviceService;
+import c24.thriftshop.webspring.domain.device.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,12 +21,12 @@ public class DeviceController {
     @RequestMapping("/rent")
     @PostMapping
     public String rentDevice(@RequestBody final DeviceModel device) {
-        return null;
+        return deviceService.rentDevice(device.getName(), device.getEmail(), device.getDuration()).message();
     }
 
     @RequestMapping("/return")
     @PostMapping
     public String returnDevice(@RequestBody final DeviceModel device) {
-        return null;
+        return deviceService.returnDevice(device.getName(), device.getEmail()).message();
     }
 }

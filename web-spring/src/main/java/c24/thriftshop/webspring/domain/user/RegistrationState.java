@@ -1,4 +1,4 @@
-package c24.thriftshop.webspring.domain;
+package c24.thriftshop.webspring.domain.user;
 
 public enum RegistrationState {
     Successful, WeakPassword, NotValidEmail, EmailAlreadyExists;

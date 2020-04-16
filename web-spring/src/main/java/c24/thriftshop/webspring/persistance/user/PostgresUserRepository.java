@@ -1,4 +1,4 @@
-package c24.thriftshop.webspring.persistance;
+package c24.thriftshop.webspring.persistance.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

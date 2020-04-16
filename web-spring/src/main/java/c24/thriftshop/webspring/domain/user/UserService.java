@@ -1,7 +1,9 @@
-package c24.thriftshop.webspring.domain;
+package c24.thriftshop.webspring.domain.user;
 
-import c24.thriftshop.webspring.persistance.UserEntity;
-import c24.thriftshop.webspring.persistance.UserRepository;
+import c24.thriftshop.webspring.domain.Email;
+import c24.thriftshop.webspring.domain.Password;
+import c24.thriftshop.webspring.persistance.user.UserEntity;
+import c24.thriftshop.webspring.persistance.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

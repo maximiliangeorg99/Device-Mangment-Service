@@ -1,4 +1,4 @@
-package c24.thriftshop.webspring.presentation;
+package c24.thriftshop.webspring.presentation.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
