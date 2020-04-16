@@ -2,8 +2,8 @@ package c24.thriftshop.webspring.domain.user;
 
 import c24.thriftshop.webspring.domain.Email;
 import c24.thriftshop.webspring.domain.Password;
-import c24.thriftshop.webspring.persistance.user.UserEntity;
-import c24.thriftshop.webspring.persistance.user.UserRepository;
+import c24.thriftshop.webspring.persistence.user.UserEntity;
+import c24.thriftshop.webspring.persistence.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class UserService {
     //}
 
     @Autowired
-    public UserService(@Qualifier("userPostgres") final UserRepository userRepository) {
+    public UserService(@Qualifier("User") final UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

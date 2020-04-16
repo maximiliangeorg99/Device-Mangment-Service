@@ -1,0 +1,29 @@
+version: '3'
+services:
+  thriftshop-db:
+    container_name: thriftshop-db
+    image: mysql:8
+    expose:
+      - 3306
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=Chrono24!
+      - MYSQL_USER=c24
+      - MYSQL_PASSWORD=Chrono24!
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    restart: always
+
+  thriftshop:
+    container_name: thriftshop
+    depends_on:
+      - thriftshop-db
+    expose:
+      - 80
+    ports:
+      - "9080:80"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always

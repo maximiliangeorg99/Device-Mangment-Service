@@ -1,4 +1,4 @@
-package c24.thriftshop.webspring.persistance.user;
+package c24.thriftshop.webspring.persistence.user;
 
 import java.util.ArrayList;
 

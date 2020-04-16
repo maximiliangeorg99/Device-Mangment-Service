@@ -1,4 +1,4 @@
-package c24.thriftshop.webspring.persistance;
+package c24.thriftshop.webspring.persistence;
 
 import java.util.Collection;
 import java.util.Optional;

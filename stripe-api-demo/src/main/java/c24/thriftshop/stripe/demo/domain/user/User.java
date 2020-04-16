@@ -12,7 +12,6 @@ public class User {
 
     public User(final UserEntity userEntity) {
         email = new Email(userEntity.getEmail());
-        //TODO Crappy implementation
         password = new Password(userEntity.getPassword(), userEntity.getSalt());
         id = UUID.randomUUID();
     }

@@ -1,4 +1,4 @@
-package c24.thriftshop.webspring.persistance.datasource;
+package c24.thriftshop.webspring.persistence.datasource;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;

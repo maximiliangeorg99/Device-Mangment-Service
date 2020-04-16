@@ -1,17 +1,33 @@
-package c24.thriftshop.webspring.persistance.user;
+package c24.thriftshop.webspring.persistence.user;
 
 import c24.thriftshop.webspring.domain.user.User;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
+//TODO custom Tabellenname definieren
+//TODO custom Spaltennamen definieren
+//hibernate annotations
+
+@Entity
+@Table(name = "USER")
 public class UserEntity {
-    private final String email;
-    private final String password;
-    private final String salt;
+
+    @Id
+    @Column(name = "ID")
     private final UUID id;
+    @Column(name = "EMAIL")
+    private final String email;
+    @Column(name = "PASSWORD")
+    private final String password;
+    @Column(name = "SALT")
+    private final String salt;
+    @Column(name = "ISACTIVE")
     boolean isActive;
 
-    //TODO remove Constructor Chaos
     //flat copy
     public UserEntity(final String email, final String password, final String salt, final UUID id, final boolean isActive) {
         this.id = id;
