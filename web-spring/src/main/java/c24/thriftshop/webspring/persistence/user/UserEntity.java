@@ -6,11 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 import java.util.UUID;
-
-//TODO custom Tabellenname definieren
-//TODO custom Spaltennamen definieren
-//hibernate annotations
 
 @Entity
 @Table(name = "USER")
@@ -18,35 +15,51 @@ public class UserEntity {
 
     @Id
     @Column(name = "ID")
-    private final UUID id;
+    private UUID id;
     @Column(name = "EMAIL")
-    private final String email;
+    private String email;
     @Column(name = "PASSWORD")
-    private final String password;
+    private String password;
     @Column(name = "SALT")
-    private final String salt;
-    @Column(name = "ISACTIVE")
-    boolean isActive;
+    private String salt;
+    @Column(name = "TOKEN")
+    private UUID token;
+    @Column(name = "TOKEN_EXPERATION_DATE")
+    private Date expirationDate;
 
-    //flat copy
-    public UserEntity(final String email, final String password, final String salt, final UUID id, final boolean isActive) {
-        this.id = id;
-        this.email = email.toLowerCase();
-        this.password = password;
-        this.isActive = isActive;
-        this.salt = salt;
+    public UserEntity() {
     }
 
     public UserEntity(final User user) {
         this.id = UUID.randomUUID();
         this.email = user.getEmail().getEmailAsString();
         this.password = user.getPassword().getHash();
-        this.isActive = true;
+        this.token = null;
         this.salt = user.getPassword().getSalt();
+    }
+
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(final Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public UUID getToken() {
+        return token;
+    }
+
+    public void setToken(final UUID token) {
+        this.token = token;
     }
 
     public String getSalt() {
         return salt;
+    }
+
+    public void setSalt(final String salt) {
+        this.salt = salt;
     }
 
     @Override
@@ -64,23 +77,27 @@ public class UserEntity {
         return id.hashCode();
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(final boolean active) {
-        isActive = active;
-    }
-
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(final String email) {
+        this.email = email;
     }
 
     public String getPassword() {
         return password;
     }
 
+    public void setPassword(final String password) {
+        this.password = password;
+    }
+
     public UUID getId() {
         return id;
+    }
+
+    public void setId(final UUID id) {
+        this.id = id;
     }
 }

@@ -2,7 +2,7 @@ package c24.thriftshop.webspring.domain.device;
 
 import c24.thriftshop.webspring.domain.Email;
 
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -11,23 +11,24 @@ public class Device {
     private final String name;
     private final boolean available;
     private final Email email;
-    private final String rentDate;
-    private final String returnDate;
+    private final Date rentDate;
+    private final Date returnDate;
 
-    //TODO crappy
-    public Device(final String name, final String email, final int Duration) {
+    public Device(final String name, final String email, final int duration) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.available = false;
         this.email = new Email(email);
         final Date curr = new Date();
-        this.rentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(curr);
-        curr.setHours(curr.getHours() + Duration);
-        this.returnDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(curr);
+        this.rentDate = curr;
+        final Calendar c = Calendar.getInstance();
+        c.setTime(curr);
+        c.add(Calendar.DATE, duration);
+        final Date then = c.getTime();
+        this.returnDate = then;
     }
 
-    //flat copy
-    public Device(final UUID id, final String name, final boolean available, final String email, final String rentDate, final String returnDate) {
+    public Device(final UUID id, final String name, final boolean available, final String email, final Date rentDate, final Date returnDate) {
         this.id = id;
         this.name = name;
         this.available = available;
@@ -52,11 +53,11 @@ public class Device {
         return email;
     }
 
-    public String getRentDate() {
+    public Date getRentDate() {
         return rentDate;
     }
 
-    public String getReturnDate() {
+    public Date getReturnDate() {
         return returnDate;
     }
 }

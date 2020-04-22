@@ -10,4 +10,11 @@ public class Email {
     public String getEmailAsString() {
         return email;
     }
+
+    private boolean isValidEmailAddressString(final String email) {
+        final String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        final java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        final java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
 }

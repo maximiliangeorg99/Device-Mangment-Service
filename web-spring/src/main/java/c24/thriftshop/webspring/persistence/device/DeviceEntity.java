@@ -6,32 +6,27 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Device")
+@Table(name = "DEVICE")
 public class DeviceEntity {
     @Id
-    @Column(name = "id")
-    private final UUID id;
-    @Column(name = "name")
-    private final String name;
-    @Column(name = "available")
-    private final boolean available;
-    @Column(name = "email")
-    private final String email;
-    @Column(name = "rentDate")
-    private final String rentDate;
-    @Column(name = "returnDate")
-    private final String returnDate;
+    @Column(name = "ID")
+    private UUID id;
+    @Column(name = "NAME")
+    private String name;
+    @Column(name = "AVAILABLE")
+    private boolean available;
+    @Column(name = "EMAIL")
+    private String email;
+    @Column(name = "RENT_DATE")
+    private Date rentDate;
+    @Column(name = "RETURN_DATE")
+    private Date returnDate;
 
-    public DeviceEntity(final UUID id, final String name, final boolean available, final String email, final String rentDate, final String returnDate) {
-        this.id = id;
-        this.name = name;
-        this.available = available;
-        this.email = email;
-        this.rentDate = rentDate;
-        this.returnDate = returnDate;
+    public DeviceEntity() {
     }
 
     public DeviceEntity(final Device device) {
@@ -47,23 +42,47 @@ public class DeviceEntity {
         return id;
     }
 
+    public void setId(final UUID id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 
     public boolean isAvailable() {
         return available;
     }
 
+    public void setAvailable(final boolean available) {
+        this.available = available;
+    }
+
     public String getEmail() {
         return email;
     }
 
-    public String getRentDate() {
+    public void setEmail(final String email) {
+        this.email = email;
+    }
+
+    public Date getRentDate() {
         return rentDate;
     }
 
-    public String getReturnDate() {
+    public void setRentDate(final Date rentDate) {
+        this.rentDate = rentDate;
+    }
+
+    public Date getReturnDate() {
         return returnDate;
+    }
+
+    public void setReturnDate(final Date returnDate) {
+        this.returnDate = returnDate;
     }
 }

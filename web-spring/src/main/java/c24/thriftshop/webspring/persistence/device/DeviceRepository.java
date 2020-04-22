@@ -6,11 +6,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository("Device")
+@Repository
 public interface DeviceRepository extends JpaRepository<DeviceEntity, UUID> {
 
     Optional<DeviceEntity> findByName(String Name);
-
-    void updateAvailable(final String name, boolean b);
 }
-

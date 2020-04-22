@@ -42,6 +42,16 @@ public class Password {
         return new Converter().bytesToHex(saltBytes);
     }
 
+    public boolean isValidPassword(final String password) {
+        final boolean minLength = password.length() >= 8;
+        final boolean hasUppercase = !password.equals(password.toLowerCase());
+        final boolean hasLowercase = !password.equals(password.toUpperCase());
+        final boolean hasSpecial = !password.matches("[A-Za-z0-9 ]*");
+        final boolean hasNumbers = !password.matches("[A-Za-z.!#$%&'*+/=?^_`{|}~-]*");
+        final boolean hasLetters = !password.matches("[0-9]*");
+        return minLength && hasUppercase && hasLowercase && hasSpecial && hasNumbers && hasLetters;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;

@@ -1,7 +1,11 @@
 package c24.thriftshop.webspring.presentation.user;
 
-import c24.thriftshop.webspring.domain.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import c24.thriftshop.webspring.domain.user.login.LoginRequest;
+import c24.thriftshop.webspring.domain.user.login.LoginResponse;
+import c24.thriftshop.webspring.domain.user.login.LoginService;
+import c24.thriftshop.webspring.domain.user.register.RegisterRequest;
+import c24.thriftshop.webspring.domain.user.register.RegisterResponse;
+import c24.thriftshop.webspring.domain.user.register.RegisterService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,23 +14,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 @RestController
 public class UserController {
-    private final UserService userService;
+    private final LoginService loginService;
+    private final RegisterService registerService;
 
-    @Autowired
-    public UserController(final UserService userService) {
-        this.userService = userService;
+    public UserController(final LoginService loginService, final RegisterService registerService) {
+        this.loginService = loginService;
+        this.registerService = registerService;
     }
 
     @RequestMapping("/register")
     @PostMapping
-    public String registerUser(@RequestBody final UserModel user) {
-        return userService.registerUser(user.getEmail(), user.getPassword()).message();
+    public RegisterResponse registerUser(@RequestBody final RegisterRequest registerRequest) {
+        return registerService.execute(registerRequest);
     }
 
     @RequestMapping("/login")
     @PostMapping
-    public String loginUser(@RequestBody final UserModel user) {
-        return userService.loginUser(user.getEmail(), user.getPassword()).message();
+    public LoginResponse loginUser(@RequestBody final LoginRequest loginRequest) {
+        return loginService.execute(loginRequest);
     }
-
 }
