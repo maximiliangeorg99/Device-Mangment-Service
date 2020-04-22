@@ -12,6 +12,7 @@
       <module>console</module>
       <module>stripe-api-demo</module>
       <module>web-spring</module>
+      <module>authentification</module>
    </modules>
 
    <properties>
