@@ -33,4 +33,5 @@ public class UserController {
     public LoginResponse loginUser(@RequestBody final LoginRequest loginRequest) {
         return loginService.execute(loginRequest);
     }
+
 }

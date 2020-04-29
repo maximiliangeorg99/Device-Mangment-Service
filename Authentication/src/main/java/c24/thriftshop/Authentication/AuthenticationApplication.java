@@ -1,13 +1,13 @@
-package c24.thriftshop.authentification;
+package c24.thriftshop.Authentication;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AuthentificationApplication {
+public class AuthenticationApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AuthentificationApplication.class, args);
+		SpringApplication.run(AuthenticationApplication.class, args);
 	}
 
 }
