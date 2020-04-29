@@ -38,7 +38,7 @@ public class LoginService {
     public LoginResponse login(final String username, final String password) {
         if (ldapTemplate.authenticate(LdapUtils.emptyLdapName(), new EqualsFilter("uid", username).toString(), password)) {
             final String token = UUID.randomUUID().toString();
-            tokenMap.put(token, new Date(System.currentTimeMillis() + 3600 * 1000));
+            tokenMap.put(token, new Date(System.currentTimeMillis() + 1000 * 3600));
             final LoginResponse loginResponse = new LoginResponse();
             loginResponse.setToken(token);
             return loginResponse;

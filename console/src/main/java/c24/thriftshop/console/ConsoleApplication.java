@@ -13,9 +13,9 @@ public class ConsoleApplication {
         commandLine.addSubcommand("return", new ReturnCommand());
         commandLine.addSubcommand("authenticate", new AuthenticationCommand());
 
-        final String[] inputs = {"l", "-e", "gauss", "-p", "password"};
-        //final String[] inputs = {"a", "-t", "026d1786-a1c2-4508-a228-3cba295cefe9"};
+        //final String[] inputs = {"l", "-e", "gauss", "-p", "password"};
+        //final String[] inputs = {"a", "-t", "af21193b-abfc-44d2-aa45-d34223b6fae1"};
 
-        commandLine.parseWithHandler(new CommandLine.RunLast(), inputs);
+        commandLine.parseWithHandler(new CommandLine.RunLast(), args);
     }
 }
