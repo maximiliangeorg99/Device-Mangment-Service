@@ -5,21 +5,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class RentRequest {
     private final String deviceName;
     private final int durationInDays;
-    private final String token;
-    private final String email;
+    private final String username;
 
     public RentRequest(@JsonProperty("deviceName") final String deviceName,
                        @JsonProperty("duration") final int durationInDays,
-                       @JsonProperty("token") final String token,
-                       @JsonProperty("email") final String email) {
+                       @JsonProperty("username") final String username) {
         this.deviceName = deviceName;
         this.durationInDays = durationInDays;
-        this.token = token;
-        this.email = email;
+        this.username = username;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
     public String getDeviceName() {
@@ -30,7 +27,4 @@ public class RentRequest {
         return durationInDays;
     }
 
-    public String getToken() {
-        return token;
-    }
 }

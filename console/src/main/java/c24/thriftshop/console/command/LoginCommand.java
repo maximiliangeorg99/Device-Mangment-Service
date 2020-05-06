@@ -21,7 +21,7 @@ public class LoginCommand implements Runnable {
 
     @Override
     public void run() {
-        final HttpResponse<String> response = Unirest.post("http://localhost:8080/login")
+        final HttpResponse<String> response = Unirest.post("http://localhost:8090/user/login")
                 .header("content-type", "application/json")
                 .body("{\n\t\"username\": \"" + username + "\",\n\t\"password\": \"" + password + "\"\n}")
                 .asString();
@@ -32,6 +32,6 @@ public class LoginCommand implements Runnable {
         } catch (final IOException e) {
             e.printStackTrace();
         }
-
+        System.out.println((response.isSuccess()) ? "Login successful" : "Login failed");
     }
 }

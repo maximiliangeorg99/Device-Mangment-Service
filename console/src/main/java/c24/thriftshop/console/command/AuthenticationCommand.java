@@ -20,7 +20,7 @@ public class AuthenticationCommand implements Runnable {
         } catch (final IOException e) {
             e.printStackTrace();
         }
-        final HttpResponse<String> response = Unirest.post("http://localhost:8080/authenticate")
+        final HttpResponse<String> response = Unirest.post("http://localhost:8090/user/authenticate")
                 .header("Authorization", "Bearer " + token)
                 .asString();
         System.out.println(response.getBody().equals("true") ? "authentication successful" : "authentication failed");

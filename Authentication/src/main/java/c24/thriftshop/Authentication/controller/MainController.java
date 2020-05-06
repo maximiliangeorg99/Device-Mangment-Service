@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 public class MainController {
@@ -20,7 +23,12 @@ public class MainController {
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody final LoginRequest request) {
-        return loginService.login(request.getUsername(), request.getPassword());
+        final LoginResponse response = loginService.login(request.getUsername(), request.getPassword());
+        if (response.getToken() != null) {
+            return response;
+        } else {
+            throw new ResponseStatusException(NOT_FOUND, "Unable to find user with this password");
+        }
     }
 
     @PostMapping("/authenticate")

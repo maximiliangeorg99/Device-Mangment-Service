@@ -18,7 +18,7 @@ public class User {
     }
 
     public User(final UserEntity userEntity) {
-        email = new Email(userEntity.getEmail());
+        email = new Email(userEntity.getUsername());
         password = new Password(userEntity.getPassword(), userEntity.getSalt());
         id = UUID.randomUUID();
     }

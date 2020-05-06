@@ -19,17 +19,19 @@ public class LoginService {
 
     private final LdapTemplate ldapTemplate;
     private final HashMap<String, Date> tokenMap;
-
+    private final HashMap<String, String> userToTokenMap;
 
     @Autowired
     public LoginService(final LdapTemplate ldapTemplate) {
         this.ldapTemplate = ldapTemplate;
         this.tokenMap = new HashMap<>();
+        this.userToTokenMap = new HashMap<>();
     }
 
-    public boolean authenticate(final String token) {
-        if (tokenMap.containsKey(token)) {
-            final Date expiration = tokenMap.get(token);
+    //refresh duration on authenticate?
+    public boolean authenticate(final String username) {
+        if (tokenMap.containsKey(userToTokenMap.get(username))) {
+            final Date expiration = tokenMap.get(userToTokenMap.get(username));
             return expiration.after(new Date(System.currentTimeMillis()));
         }
         return false;
@@ -39,6 +41,7 @@ public class LoginService {
         if (ldapTemplate.authenticate(LdapUtils.emptyLdapName(), new EqualsFilter("uid", username).toString(), password)) {
             final String token = UUID.randomUUID().toString();
             tokenMap.put(token, new Date(System.currentTimeMillis() + 1000 * 3600));
+            userToTokenMap.put(username, token);
             final LoginResponse loginResponse = new LoginResponse();
             loginResponse.setToken(token);
             return loginResponse;

@@ -12,15 +12,16 @@ import java.util.UUID;
 @Entity
 @Table(name = "DEVICE")
 public class DeviceEntity {
+
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", length = 36)
     private UUID id;
     @Column(name = "NAME")
     private String name;
     @Column(name = "AVAILABLE")
     private boolean available;
-    @Column(name = "EMAIL")
-    private String email;
+    @Column(name = "USERNAME")
+    private String username;
     @Column(name = "RENT_DATE")
     private Date rentDate;
     @Column(name = "RETURN_DATE")
@@ -29,11 +30,20 @@ public class DeviceEntity {
     public DeviceEntity() {
     }
 
+    public DeviceEntity(final UUID id, final String name, final boolean available, final String username, final Date rentDate, final Date returnDate) {
+        this.id = id;
+        this.name = name;
+        this.available = available;
+        this.username = username;
+        this.rentDate = rentDate;
+        this.returnDate = returnDate;
+    }
+
     public DeviceEntity(final Device device) {
         this.id = device.getId();
         this.name = device.getName();
         this.available = device.isAvailable();
-        this.email = device.getEmail().getEmailAsString();
+        this.username = device.getUsername();
         this.rentDate = device.getRentDate();
         this.returnDate = device.getReturnDate();
     }
@@ -62,12 +72,12 @@ public class DeviceEntity {
         this.available = available;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(final String email) {
-        this.email = email;
+    public void setUsername(final String email) {
+        this.username = email;
     }
 
     public Date getRentDate() {

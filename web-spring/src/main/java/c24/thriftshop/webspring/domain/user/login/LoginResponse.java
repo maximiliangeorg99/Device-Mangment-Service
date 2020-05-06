@@ -3,16 +3,16 @@ package c24.thriftshop.webspring.domain.user.login;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LoginResponse {
-    private final LoginMessage message;
+    private final boolean successful;
     private final String token;
 
-    public LoginResponse(@JsonProperty("message") final LoginMessage message, @JsonProperty("token") final String token) {
-        this.message = message;
+    public LoginResponse(@JsonProperty("successful") final boolean successful, @JsonProperty("token") final String token) {
+        this.successful = successful;
         this.token = token;
     }
 
-    public LoginMessage getMessage() {
-        return message;
+    public boolean isSuccessful() {
+        return successful;
     }
 
     public String getToken() {

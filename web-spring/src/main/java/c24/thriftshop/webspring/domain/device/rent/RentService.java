@@ -1,33 +1,44 @@
 package c24.thriftshop.webspring.domain.device.rent;
 
-import c24.thriftshop.webspring.domain.device.Device;
+import c24.thriftshop.webspring.domain.user.authenticate.AuthenticationRequest;
+import c24.thriftshop.webspring.domain.user.authenticate.AuthenticationService;
 import c24.thriftshop.webspring.persistence.device.DeviceEntity;
 import c24.thriftshop.webspring.persistence.device.DeviceRepository;
-import c24.thriftshop.webspring.persistence.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
 public class RentService {
     private final DeviceRepository deviceRepository;
-    private final UserRepository userRepository;
+    private final AuthenticationService authenticationService;
 
     @Autowired
     public RentService(final DeviceRepository deviceRepository,
-                       final UserRepository userRepository) {
+                       final AuthenticationService authenticationService) {
         this.deviceRepository = deviceRepository;
-        this.userRepository = userRepository;
+        this.authenticationService = authenticationService;
     }
 
-    private RentResponse bookDevice(final String deviceName, final String email, final String token, final int duration) {
-        if (userRepository.findByEmail(email).filter(userEntity -> userEntity.getToken().toString().equals(token)).isPresent()) {
-            final Device device = new Device(deviceName, email, duration);
-            deviceRepository.save(new DeviceEntity());
-            return new RentResponse(RentMessage.SUCCESSFUL, true, null);
+    private Date addHours(final Date date, final int hours) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR_OF_DAY, hours);
+        return calendar.getTime();
+    }
+
+    private RentResponse bookDevice(final DeviceEntity deviceEntity, final RentRequest request) {
+        if (authenticationService.execute(new AuthenticationRequest(request.getUsername())).isSuccessful()) {
+            deviceEntity.setAvailable(false);
+            deviceEntity.setRentDate(new Date());
+            deviceEntity.setReturnDate(addHours(new Date(), request.getDurationInDays()));
+            deviceRepository.save(deviceEntity);
+            return new RentResponse(RentMessage.SUCCESSFUL, true, deviceEntity.getReturnDate());
         }
-        return new RentResponse(RentMessage.NOT_AUTHENTICATED, false, null);
+        return new RentResponse(RentMessage.NOT_AUTHENTICATED, false, deviceEntity.getReturnDate());
     }
 
     public RentResponse execute(final RentRequest rentRequest) {
@@ -35,7 +46,7 @@ public class RentService {
         final Optional<DeviceEntity> optionalDeviceEntity = deviceRepository.findByName(rentRequest.getDeviceName());
         if (optionalDeviceEntity.isPresent()) {
             if (optionalDeviceEntity.get().isAvailable())
-                return bookDevice(rentRequest.getDeviceName(), rentRequest.getEmail(), rentRequest.getToken(), rentRequest.getDurationInDays());
+                return bookDevice(optionalDeviceEntity.get(), rentRequest);
             else
                 return new RentResponse(RentMessage.IN_RENT, false, optionalDeviceEntity.get().getReturnDate());
         } else

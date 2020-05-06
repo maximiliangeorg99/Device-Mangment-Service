@@ -14,10 +14,10 @@ import java.util.UUID;
 public class UserEntity {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", length = 36)
     private UUID id;
-    @Column(name = "EMAIL")
-    private String email;
+    @Column(name = "USERNAME")
+    private String username;
     @Column(name = "PASSWORD")
     private String password;
     @Column(name = "SALT")
@@ -32,7 +32,7 @@ public class UserEntity {
 
     public UserEntity(final User user) {
         this.id = UUID.randomUUID();
-        this.email = user.getEmail().getEmailAsString();
+        this.username = user.getEmail().getEmailAsString();
         this.password = user.getPassword().getHash();
         this.token = null;
         this.salt = user.getPassword().getSalt();
@@ -77,12 +77,12 @@ public class UserEntity {
         return id.hashCode();
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(final String email) {
-        this.email = email;
+    public void setUsername(final String username) {
+        this.username = username;
     }
 
     public String getPassword() {
