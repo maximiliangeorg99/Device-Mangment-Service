@@ -21,7 +21,7 @@ public class AddService {
     }
 
     public void execute(final Addrequest addrequest) {
-        final DeviceEntity newDeviceEntity = new DeviceEntity(UUID.randomUUID(), addrequest.name, true, "", null, null);
+        final DeviceEntity newDeviceEntity = new DeviceEntity(UUID.randomUUID(), addrequest.getName(), true, "", null, null);
         deviceRepository.save(newDeviceEntity);
     }
 }
