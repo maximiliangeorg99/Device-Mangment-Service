@@ -1,6 +1,5 @@
 package c24.thriftshop.webspring.domain.device.returnn;
 
-import c24.thriftshop.webspring.domain.user.authenticate.AuthenticationRequest;
 import c24.thriftshop.webspring.domain.user.authenticate.AuthenticationService;
 import c24.thriftshop.webspring.persistence.device.DeviceEntity;
 import c24.thriftshop.webspring.persistence.device.DeviceRepository;
@@ -20,18 +19,18 @@ public class ReturnService {
     }
 
     private ReturnResponse bookDevice(final DeviceEntity deviceEntity) {
-        if (authenticationService.execute(new AuthenticationRequest(deviceEntity.getUsername())).isSuccessful()) {
-            deviceEntity.setAvailable(true);
-            deviceRepository.save(deviceEntity);
-            return new ReturnResponse(ReturnMessage.SUCCESSFUL);
-        }
-        return new ReturnResponse(ReturnMessage.NOT_AUTHENTICATED);
+        deviceEntity.setAvailable(true);
+        deviceEntity.setUserId("");
+        deviceEntity.setRentDate(null);
+        deviceEntity.setReturnDate(null);
+        deviceRepository.save(deviceEntity);
+        return new ReturnResponse("Successful", true);
     }
 
-    public ReturnResponse execute(final ReturnRequest returnRequest) {
+    public ReturnResponse execute(final ReturnRequest returnRequest, final java.lang.String id) {
         return deviceRepository.findByName(returnRequest.getDeviceName())
-                .filter(deviceEntity -> deviceEntity.getUsername().equals(returnRequest.getUsername()))
+                .filter(deviceEntity -> deviceEntity.getUserId().equals(id))
                 .map(this::bookDevice)
-                .orElse(new ReturnResponse(ReturnMessage.NOT_IN_RENT_BY_THIS_USER));
+                .orElse(new ReturnResponse("Not in rent by this User", false));
     }
 }

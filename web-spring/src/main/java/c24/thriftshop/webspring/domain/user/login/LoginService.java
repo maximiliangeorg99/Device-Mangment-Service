@@ -16,7 +16,7 @@ public class LoginService {
         if (response.isSuccess()) {
             return new LoginResponse(true, new JSONObject(response.getBody()).getString("token"));
         } else {
-            return new LoginResponse(false, null);
+            return new LoginResponse(false, "");
         }
     }
 }

@@ -11,6 +11,7 @@ public class LoginResponse {
         this.token = token;
     }
 
+
     public boolean isSuccessful() {
         return successful;
     }

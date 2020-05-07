@@ -1,6 +1,6 @@
 package c24.thriftshop.webspring.persistence.device;
 
-import c24.thriftshop.webspring.domain.device.Device;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,37 +15,20 @@ public class DeviceEntity {
 
     @Id
     @Column(name = "ID", length = 36)
+    @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID id;
     @Column(name = "NAME")
     private String name;
     @Column(name = "AVAILABLE")
     private boolean available;
-    @Column(name = "USERNAME")
-    private String username;
+    @Column(name = "USERID")
+    private String userId;
     @Column(name = "RENT_DATE")
     private Date rentDate;
     @Column(name = "RETURN_DATE")
     private Date returnDate;
 
     public DeviceEntity() {
-    }
-
-    public DeviceEntity(final UUID id, final String name, final boolean available, final String username, final Date rentDate, final Date returnDate) {
-        this.id = id;
-        this.name = name;
-        this.available = available;
-        this.username = username;
-        this.rentDate = rentDate;
-        this.returnDate = returnDate;
-    }
-
-    public DeviceEntity(final Device device) {
-        this.id = device.getId();
-        this.name = device.getName();
-        this.available = device.isAvailable();
-        this.username = device.getUsername();
-        this.rentDate = device.getRentDate();
-        this.returnDate = device.getReturnDate();
     }
 
     public UUID getId() {
@@ -72,12 +55,12 @@ public class DeviceEntity {
         this.available = available;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUsername(final String email) {
-        this.username = email;
+    public void setUserId(final String email) {
+        this.userId = email;
     }
 
     public Date getRentDate() {

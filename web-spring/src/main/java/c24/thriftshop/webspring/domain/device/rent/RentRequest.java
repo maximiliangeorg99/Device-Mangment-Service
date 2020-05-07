@@ -4,27 +4,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RentRequest {
     private final String deviceName;
-    private final int durationInDays;
-    private final String username;
+    private final int durationInHours;
 
     public RentRequest(@JsonProperty("deviceName") final String deviceName,
-                       @JsonProperty("duration") final int durationInDays,
-                       @JsonProperty("username") final String username) {
+                       @JsonProperty("duration") final int durationInHours
+    ) {
         this.deviceName = deviceName;
-        this.durationInDays = durationInDays;
-        this.username = username;
-    }
-
-    public String getUsername() {
-        return username;
+        this.durationInHours = durationInHours;
     }
 
     public String getDeviceName() {
         return deviceName;
     }
 
-    public int getDurationInDays() {
-        return durationInDays;
+    public int getDurationInHours() {
+        return durationInHours;
     }
 
 }

@@ -1,5 +1,6 @@
 package c24.thriftshop.Authentication.service;
 
+import c24.thriftshop.Authentication.model.AuthResponse;
 import c24.thriftshop.Authentication.model.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.AttributesMapper;
@@ -19,34 +20,33 @@ public class LoginService {
 
     private final LdapTemplate ldapTemplate;
     private final HashMap<String, Date> tokenMap;
-    private final HashMap<String, String> userToTokenMap;
+    private final HashMap<String, String> tokenToIdMap;
 
     @Autowired
     public LoginService(final LdapTemplate ldapTemplate) {
         this.ldapTemplate = ldapTemplate;
         this.tokenMap = new HashMap<>();
-        this.userToTokenMap = new HashMap<>();
+        this.tokenToIdMap = new HashMap<>();
     }
 
-    //refresh duration on authenticate?
-    public boolean authenticate(final String username) {
-        if (tokenMap.containsKey(userToTokenMap.get(username))) {
-            final Date expiration = tokenMap.get(userToTokenMap.get(username));
-            return expiration.after(new Date(System.currentTimeMillis()));
+    public AuthResponse authenticate(final String token) {
+        boolean s = false;
+        if (tokenMap.containsKey(token)) {
+            final Date expiration = tokenMap.get(token);
+            s = expiration.after(new Date(System.currentTimeMillis()));
         }
-        return false;
+        return new AuthResponse(tokenToIdMap.get(token), s);
     }
 
     public LoginResponse login(final String username, final String password) {
         if (ldapTemplate.authenticate(LdapUtils.emptyLdapName(), new EqualsFilter("uid", username).toString(), password)) {
             final String token = UUID.randomUUID().toString();
             tokenMap.put(token, new Date(System.currentTimeMillis() + 1000 * 3600));
-            userToTokenMap.put(username, token);
-            final LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setToken(token);
+            tokenToIdMap.put(token, username);
+            final LoginResponse loginResponse = new LoginResponse(token);
             return loginResponse;
         } else {
-            return new LoginResponse();
+            return new LoginResponse("");
         }
 
     }

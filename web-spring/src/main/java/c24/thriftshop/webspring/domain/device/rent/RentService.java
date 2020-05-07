@@ -1,6 +1,5 @@
 package c24.thriftshop.webspring.domain.device.rent;
 
-import c24.thriftshop.webspring.domain.user.authenticate.AuthenticationRequest;
 import c24.thriftshop.webspring.domain.user.authenticate.AuthenticationService;
 import c24.thriftshop.webspring.persistence.device.DeviceEntity;
 import c24.thriftshop.webspring.persistence.device.DeviceRepository;
@@ -30,26 +29,24 @@ public class RentService {
         return calendar.getTime();
     }
 
-    private RentResponse bookDevice(final DeviceEntity deviceEntity, final RentRequest request) {
-        if (authenticationService.execute(new AuthenticationRequest(request.getUsername())).isSuccessful()) {
-            deviceEntity.setAvailable(false);
-            deviceEntity.setRentDate(new Date());
-            deviceEntity.setReturnDate(addHours(new Date(), request.getDurationInDays()));
-            deviceRepository.save(deviceEntity);
-            return new RentResponse(RentMessage.SUCCESSFUL, true, deviceEntity.getReturnDate());
+    private RentResponse bookDevice(final DeviceEntity deviceEntity,
+                                    final RentRequest request, final String id) {
+        if (!deviceEntity.isAvailable()) {
+            return new RentResponse("In rent until " + deviceEntity.getReturnDate().toString(), false);
         }
-        return new RentResponse(RentMessage.NOT_AUTHENTICATED, false, deviceEntity.getReturnDate());
+        deviceEntity.setAvailable(false);
+        deviceEntity.setUserId(id);
+        deviceEntity.setRentDate(new Date());
+        deviceEntity.setReturnDate(addHours(new Date(), request.getDurationInHours()));
+        deviceRepository.save(deviceEntity);
+        return new RentResponse("Successful", true);
     }
 
-    public RentResponse execute(final RentRequest rentRequest) {
-
+    public RentResponse execute(final RentRequest rentRequest, final String id) {
         final Optional<DeviceEntity> optionalDeviceEntity = deviceRepository.findByName(rentRequest.getDeviceName());
         if (optionalDeviceEntity.isPresent()) {
-            if (optionalDeviceEntity.get().isAvailable())
-                return bookDevice(optionalDeviceEntity.get(), rentRequest);
-            else
-                return new RentResponse(RentMessage.IN_RENT, false, optionalDeviceEntity.get().getReturnDate());
+            return bookDevice(optionalDeviceEntity.get(), rentRequest, id);
         } else
-            return new RentResponse(RentMessage.NO_SUCH_DEVICE, false, null);
+            return new RentResponse("No such device", false);
     }
 }

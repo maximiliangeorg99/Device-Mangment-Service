@@ -3,17 +3,17 @@ package c24.thriftshop.webspring.domain.user.authenticate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AuthenticationRequest {
-    String username;
+    String token;
 
-    public AuthenticationRequest(@JsonProperty("username") final String username) {
-        this.username = username;
+    public AuthenticationRequest(@JsonProperty("token") final String token) {
+        this.token = token;
     }
 
-    public String getUsername() {
-        return username;
+    public String getToken() {
+        return token;
     }
 
-    public void setUsername(final String username) {
-        this.username = username;
+    public void setToken(final String token) {
+        this.token = token;
     }
 }

@@ -1,5 +1,6 @@
 package c24.thriftshop.Authentication.controller;
 
+import c24.thriftshop.Authentication.model.AuthResponse;
 import c24.thriftshop.Authentication.model.LoginRequest;
 import c24.thriftshop.Authentication.model.LoginResponse;
 import c24.thriftshop.Authentication.service.LoginService;
@@ -32,8 +33,9 @@ public class MainController {
     }
 
     @PostMapping("/authenticate")
-    public boolean authenticate(@RequestHeader("Authorization") final String authorizationHeader) {
+    public AuthResponse authenticate(@RequestHeader("Authorization") final String authorizationHeader) {
         final String token = authorizationHeader.replaceFirst("Bearer ", "");
         return loginService.authenticate(token);
     }
+
 }

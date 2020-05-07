@@ -6,10 +6,7 @@ import c24.thriftshop.webspring.domain.user.authenticate.AuthenticationService;
 import c24.thriftshop.webspring.domain.user.login.LoginRequest;
 import c24.thriftshop.webspring.domain.user.login.LoginResponse;
 import c24.thriftshop.webspring.domain.user.login.LoginService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -27,8 +24,9 @@ public class UserController {
 
     @RequestMapping("/authenticate")
     @PostMapping
-    public AuthenticationResponse registerUser(@RequestBody final AuthenticationRequest request) {
-        return authenticationService.execute(request);
+    public AuthenticationResponse authUser(@RequestHeader("Authorization") final String authorizationHeader) {
+        final String token = authorizationHeader.replaceFirst("Bearer ", "");
+        return authenticationService.execute(new AuthenticationRequest(token));
     }
 
     @RequestMapping("/login")
