@@ -17,6 +17,9 @@ public class RentCommand implements Runnable {
     @CommandLine.Option(names = {"-t", "--time"}, required = true)
     private String time;
 
+    @CommandLine.Option(names = {"-id", "--deviceId"})
+    private int deviceId;
+
     @Override
     public void run() {
         String token = "";
@@ -26,11 +29,12 @@ public class RentCommand implements Runnable {
         } catch (final IOException e) {
             e.printStackTrace();
         }
+        final String bodyString = (deviceId == 0) ? "{\n\t\"deviceName\" : \"" + device + "\",\n\t\"duration\": " + time + "\n}" : "{\n\t\"deviceName\" : \"" + device + "\",\n\t\"duration\": " + time + ",\n\t\"deviceId\": " + deviceId + "\n}";
         final HttpResponse<String> response = Unirest.post("http://localhost:8090/device/rent")
                 .header("cookie", "JSESSIONID=E5C032F83A34491461637C150F3B223C")
                 .header("content-type", "application/json")
                 .header("Authorization", "Bearer " + token)
-                .body("{\n\t\"deviceName\" : \"" + device + "\",\n\t\"duration\": " + time + "\n}")
+                .body(bodyString)
                 .asString();
         if (response.isSuccess()) {
             final JSONObject jsonObject = new JSONObject(response.getBody());

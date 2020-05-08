@@ -6,8 +6,8 @@ public class LoginRequest {
     private final String username;
     private final String password;
 
-    public LoginRequest(@JsonProperty("username") final String username,
-                        @JsonProperty("password") final String password) {
+    public LoginRequest(@JsonProperty(value = "username", required = true) final String username,
+                        @JsonProperty(value = "password", required = true) final String password) {
         this.username = username;
         this.password = password;
     }

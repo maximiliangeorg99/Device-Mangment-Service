@@ -30,23 +30,36 @@ public class RentService {
     }
 
     private RentResponse bookDevice(final DeviceEntity deviceEntity,
-                                    final RentRequest request, final String id) {
+                                    final RentRequest request, final String userId) {
         if (!deviceEntity.isAvailable()) {
             return new RentResponse("In rent until " + deviceEntity.getReturnDate().toString(), false);
         }
         deviceEntity.setAvailable(false);
-        deviceEntity.setUserId(id);
+        deviceEntity.setUserId(userId);
         deviceEntity.setRentDate(new Date());
         deviceEntity.setReturnDate(addHours(new Date(), request.getDurationInHours()));
         deviceRepository.save(deviceEntity);
         return new RentResponse("Successful", true);
     }
 
-    public RentResponse execute(final RentRequest rentRequest, final String id) {
-        final Optional<DeviceEntity> optionalDeviceEntity = deviceRepository.findByName(rentRequest.getDeviceName());
-        if (optionalDeviceEntity.isPresent()) {
-            return bookDevice(optionalDeviceEntity.get(), rentRequest, id);
-        } else
+    public RentResponse execute(final RentRequest rentRequest, final String userId) {
+        final int deviceCount = deviceRepository.countByDeviceName(rentRequest.getDeviceName());
+        if (deviceCount == 0) {
             return new RentResponse("No such device", false);
+        } else if (deviceCount == 1) {
+            final Optional<DeviceEntity> optionalDeviceEntity = deviceRepository.findByDeviceName(rentRequest.getDeviceName());
+            return bookDevice(optionalDeviceEntity.get(), rentRequest, userId);
+        } else {
+            if (rentRequest.getDeviceId() == 0) {
+                return new RentResponse("There are multiple Devices with this name pleas add the DeviceId", false);
+            } else {
+                final Optional<DeviceEntity> optionalDeviceEntity = deviceRepository.findByDeviceNameAndDeviceId(rentRequest.getDeviceName(), rentRequest.getDeviceId());
+                if (optionalDeviceEntity.isPresent()) {
+                    return bookDevice(optionalDeviceEntity.get(), rentRequest, userId);
+                } else {
+                    return new RentResponse("No device with this device name and device userId", false);
+                }
+            }
+        }
     }
 }

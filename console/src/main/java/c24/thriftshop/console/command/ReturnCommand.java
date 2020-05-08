@@ -14,6 +14,9 @@ public class ReturnCommand implements Runnable {
     @CommandLine.Option(names = {"-d", "--device"}, required = true)
     private String device;
 
+    @CommandLine.Option(names = {"-id", "--deviceId"})
+    private int deviceId;
+
     @Override
     public void run() {
         String token = "";
@@ -23,11 +26,12 @@ public class ReturnCommand implements Runnable {
         } catch (final IOException e) {
             e.printStackTrace();
         }
+        final String bodyString = (deviceId == 0) ? "{\n\t\"deviceName\" : \"" + device + "\"\n}" : "{\n\t\"deviceName\" : \"" + device + "\",\n\t\"deviceId\": " + deviceId + "\n}";
         final HttpResponse<String> response = Unirest.post("http://localhost:8090/device/return")
                 .header("cookie", "JSESSIONID=E5C032F83A34491461637C150F3B223C")
                 .header("content-type", "application/json")
                 .header("Authorization", "Bearer " + token)
-                .body("{\n\t\"deviceName\":\"" + device + "\"\n}")
+                .body(bodyString)
                 .asString();
         if (response.isSuccess()) {
             final JSONObject jsonObject = new JSONObject(response.getBody());

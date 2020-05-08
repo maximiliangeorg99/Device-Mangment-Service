@@ -7,7 +7,8 @@ public class RentResponse {
     private final boolean successful;
 
     public RentResponse(@JsonProperty("message") final String message,
-                        @JsonProperty("successful") final boolean successful) {
+                        @JsonProperty("successful") final boolean successful
+    ) {
         this.message = message;
         this.successful = successful;
     }

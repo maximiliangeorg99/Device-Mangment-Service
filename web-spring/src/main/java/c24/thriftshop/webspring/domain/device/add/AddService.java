@@ -24,8 +24,12 @@ public class AddService {
         final DeviceEntity newDeviceEntity = new DeviceEntity();
         newDeviceEntity.setId(UUID.randomUUID());
         newDeviceEntity.setAvailable(true);
-        newDeviceEntity.setName(addrequest.getName());
         newDeviceEntity.setUserId("");
+        newDeviceEntity.setDeviceName(addrequest.getName());
+        newDeviceEntity.setDeviceDescription(addrequest.description);
+        //NOT THREAD SAFE!
+        final int devicesCount = deviceRepository.countByDeviceName(addrequest.getName());
+        newDeviceEntity.setDeviceId(devicesCount + 1);
         deviceRepository.save(newDeviceEntity);
     }
 }

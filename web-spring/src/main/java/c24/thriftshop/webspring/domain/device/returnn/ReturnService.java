@@ -27,10 +27,21 @@ public class ReturnService {
         return new ReturnResponse("Successful", true);
     }
 
-    public ReturnResponse execute(final ReturnRequest returnRequest, final java.lang.String id) {
-        return deviceRepository.findByName(returnRequest.getDeviceName())
-                .filter(deviceEntity -> deviceEntity.getUserId().equals(id))
-                .map(this::bookDevice)
-                .orElse(new ReturnResponse("Not in rent by this User", false));
+    public ReturnResponse execute(final ReturnRequest returnRequest, final String id) {
+        if (deviceRepository.countByDeviceName(returnRequest.getDeviceName()) == 1) {
+            return deviceRepository.findByDeviceName(returnRequest.getDeviceName())
+                    .filter(deviceEntity -> deviceEntity.getUserId().equals(id))
+                    .map(this::bookDevice)
+                    .orElse(new ReturnResponse("Not in rent by this User", false));
+        } else {
+            if (returnRequest.getDeviceId() == 0) {
+                return new ReturnResponse("There are multiple Devices with this name pleas add the DeviceId", false);
+            } else {
+                return deviceRepository.findByDeviceNameAndDeviceId(returnRequest.getDeviceName(), returnRequest.getDeviceId())
+                        .filter(deviceEntity -> deviceEntity.getUserId().equals(id))
+                        .map(this::bookDevice)
+                        .orElse(new ReturnResponse("Not in rent by this User", false));
+            }
+        }
     }
 }
