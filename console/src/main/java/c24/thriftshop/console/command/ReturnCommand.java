@@ -27,7 +27,7 @@ public class ReturnCommand implements Runnable {
             e.printStackTrace();
         }
         final String bodyString = (deviceId == 0) ? "{\n\t\"deviceName\" : \"" + device + "\"\n}" : "{\n\t\"deviceName\" : \"" + device + "\",\n\t\"deviceId\": " + deviceId + "\n}";
-        final HttpResponse<String> response = Unirest.post("http://localhost:8090/device/return")
+        final HttpResponse<String> response = Unirest.post("http://localhost:8090/devices/return")
                 .header("cookie", "JSESSIONID=E5C032F83A34491461637C150F3B223C")
                 .header("content-type", "application/json")
                 .header("Authorization", "Bearer " + token)

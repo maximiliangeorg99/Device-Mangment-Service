@@ -1,11 +1,13 @@
 package c24.thriftshop.webspring.domain.device.rent;
 
+import c24.thriftshop.webspring.domain.device.Devices;
 import c24.thriftshop.webspring.domain.user.authenticate.AuthenticationService;
 import c24.thriftshop.webspring.persistence.device.DeviceEntity;
 import c24.thriftshop.webspring.persistence.device.DeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
@@ -51,7 +53,7 @@ public class RentService {
             return bookDevice(optionalDeviceEntity.get(), rentRequest, userId);
         } else {
             if (rentRequest.getDeviceId() == 0) {
-                return new RentResponse("There are multiple Devices with this name pleas add the DeviceId", false);
+                return new RentResponse("There are multiple Devices with this name pleas add the DeviceId", false, new Devices((ArrayList<DeviceEntity>) deviceRepository.findAllByDeviceName(rentRequest.getDeviceName())));
             } else {
                 final Optional<DeviceEntity> optionalDeviceEntity = deviceRepository.findByDeviceNameAndDeviceId(rentRequest.getDeviceName(), rentRequest.getDeviceId());
                 if (optionalDeviceEntity.isPresent()) {

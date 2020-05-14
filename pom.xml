@@ -13,6 +13,7 @@
         <module>stripe-api-demo</module>
         <module>web-spring</module>
         <module>Authentication</module>
+        <module>web-javalin</module>
     </modules>
 
     <properties>

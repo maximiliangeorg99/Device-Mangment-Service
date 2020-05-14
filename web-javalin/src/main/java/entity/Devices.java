@@ -1,6 +1,4 @@
-package c24.thriftshop.webspring.domain.device;
-
-import c24.thriftshop.webspring.persistence.device.DeviceEntity;
+package entity;
 
 import java.util.ArrayList;
 

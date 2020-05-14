@@ -1,6 +1,5 @@
-package c24.thriftshop.webspring.domain.device.rent;
+package entity;
 
-import c24.thriftshop.webspring.domain.device.Devices;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RentResponse {

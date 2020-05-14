@@ -17,7 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-@RequestMapping("/device")
+@RequestMapping("/devices")
 @RestController
 public class DeviceController {
 
