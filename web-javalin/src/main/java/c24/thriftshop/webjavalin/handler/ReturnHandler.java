@@ -1,18 +1,20 @@
-package handler;
+package c24.thriftshop.webjavalin.handler;
 
-import com.google.gson.Gson;
-import entity.DeviceEntity;
-import entity.ReturnRequest;
-import entity.ReturnResponse;
+import c24.thriftshop.webjavalin.entity.DeviceEntity;
+import c24.thriftshop.webjavalin.entity.ReturnRequest;
+import c24.thriftshop.webjavalin.entity.ReturnResponse;
+import c24.thriftshop.webjavalin.persistence.DeviceRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
-import persistence.DeviceRepository;
 
 public class ReturnHandler implements Handler {
+
     DeviceRepository deviceRepository;
 
-    //Autowire
+    @Inject
     public ReturnHandler(final DeviceRepository deviceRepository) {
         this.deviceRepository = deviceRepository;
     }
@@ -30,7 +32,7 @@ public class ReturnHandler implements Handler {
     public void handle(@NotNull final Context ctx) throws Exception {
         final String body = ctx.body();
         final String userId = ctx.attribute("userId");
-        final ReturnRequest request = new Gson().fromJson(body, ReturnRequest.class);
+        final ReturnRequest request = new ObjectMapper().readValue(body, ReturnRequest.class);
         if (deviceRepository.countByDeviceName(request.getDeviceName()) == 1) {
             ctx.json(deviceRepository.findByDeviceName(request.getDeviceName())
                     .filter(deviceEntity -> deviceEntity.getUserId().equals(userId))

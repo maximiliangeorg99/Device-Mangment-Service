@@ -1,18 +1,20 @@
-package handler;
+package c24.thriftshop.webjavalin.handler;
 
-import entity.DeviceEntity;
+import c24.thriftshop.webjavalin.entity.DeviceEntity;
+import c24.thriftshop.webjavalin.persistence.DeviceRepository;
+import com.google.inject.Inject;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import kong.unirest.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
-import persistence.DeviceRepository;
 
 import java.util.UUID;
 
 public class AddHandler implements Handler {
+
     DeviceRepository deviceRepository;
 
-    //Autowire
+    @Inject
     public AddHandler(final DeviceRepository deviceRepository) {
         this.deviceRepository = deviceRepository;
     }

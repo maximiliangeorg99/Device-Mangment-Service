@@ -1,14 +1,15 @@
-package handler;
+package c24.thriftshop.webjavalin.handler;
 
-import com.google.gson.Gson;
-import entity.DeviceEntity;
-import entity.Devices;
-import entity.RentRequest;
-import entity.RentResponse;
+import c24.thriftshop.webjavalin.entity.DeviceEntity;
+import c24.thriftshop.webjavalin.entity.Devices;
+import c24.thriftshop.webjavalin.entity.RentRequest;
+import c24.thriftshop.webjavalin.entity.RentResponse;
+import c24.thriftshop.webjavalin.persistence.DeviceRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
-import persistence.DeviceRepository;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,9 +17,10 @@ import java.util.Date;
 import java.util.Optional;
 
 public class RentHandler implements Handler {
+
     DeviceRepository deviceRepository;
 
-    //Autowire
+    @Inject
     public RentHandler(final DeviceRepository deviceRepository) {
         this.deviceRepository = deviceRepository;
     }
@@ -46,7 +48,7 @@ public class RentHandler implements Handler {
     @Override
     public void handle(@NotNull final Context ctx) throws Exception {
         final String body = ctx.body();
-        final RentRequest request = new Gson().fromJson(body, RentRequest.class);
+        final RentRequest request = new ObjectMapper().readValue(body, RentRequest.class);
         final String userId = ctx.attribute("userId");
         final int deviceCount = deviceRepository.countByDeviceName(request.getDeviceName());
         if (deviceCount == 0) {
@@ -62,7 +64,7 @@ public class RentHandler implements Handler {
                 if (optionalDeviceEntity.isPresent()) {
                     ctx.json(bookDevice(optionalDeviceEntity.get(), request, userId));
                 } else {
-                    ctx.json(new RentResponse("No device with this device name and device userId", false));
+                    ctx.json(new RentResponse("No device with this deviceName and deviceId", false));
                 }
             }
         }

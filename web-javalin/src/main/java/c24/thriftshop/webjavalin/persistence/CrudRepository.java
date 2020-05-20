@@ -1,4 +1,4 @@
-package persistence;
+package c24.thriftshop.webjavalin.persistence;
 
 import java.util.Optional;
 

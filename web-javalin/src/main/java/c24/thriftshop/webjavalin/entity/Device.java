@@ -1,4 +1,4 @@
-package entity;
+package c24.thriftshop.webjavalin.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

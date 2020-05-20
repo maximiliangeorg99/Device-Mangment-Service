@@ -1,11 +1,14 @@
-package persistence;
+package c24.thriftshop.webjavalin.persistence;
 
-import entity.DeviceEntity;
+import c24.thriftshop.webjavalin.entity.DeviceEntity;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
+//TODO JDBC Template prepared statement
+//TODO Speedment
+//TODO Hibernate
 public interface DeviceRepository extends CrudRepository<DeviceEntity, UUID> {
     Optional<DeviceEntity> findByDeviceName(final String name);
 

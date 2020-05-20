@@ -1,13 +1,18 @@
-package persistence;
+package c24.thriftshop.webjavalin.persistence;
 
-import entity.DeviceEntity;
+import c24.thriftshop.webjavalin.entity.DeviceEntity;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
 public class InMemoryDataBase implements DeviceRepository {
     ArrayList<DeviceEntity> DB = new ArrayList<>();
+
+    @Inject
+    public InMemoryDataBase() {
+    }
 
     @Override
     public long count() {
@@ -44,16 +49,18 @@ public class InMemoryDataBase implements DeviceRepository {
     @Override
     public Optional<DeviceEntity> findById(final UUID uuid) {
         DeviceEntity deviceEntity = null;
-        final Optional<DeviceEntity> optional = Optional.ofNullable(deviceEntity);
         for (final DeviceEntity d : DB) {
             if (d.getId().equals(uuid))
                 deviceEntity = d;
         }
-        return optional;
+        return Optional.ofNullable(deviceEntity);
     }
 
     @Override
     public DeviceEntity save(final DeviceEntity entity) {
+        if (DB.contains(entity)) {
+            DB.remove(entity);
+        }
         DB.add(entity);
         return entity;
     }
@@ -61,23 +68,21 @@ public class InMemoryDataBase implements DeviceRepository {
     @Override
     public Optional<DeviceEntity> findByDeviceName(final String name) {
         DeviceEntity deviceEntity = null;
-        final Optional<DeviceEntity> optional = Optional.ofNullable(deviceEntity);
         for (final DeviceEntity d : DB) {
             if (d.getDeviceName().equals(name))
                 deviceEntity = d;
         }
-        return optional;
+        return Optional.ofNullable(deviceEntity);
     }
 
     @Override
     public Optional<DeviceEntity> findByDeviceNameAndDeviceId(final String name, final int id) {
         DeviceEntity deviceEntity = null;
-        final Optional<DeviceEntity> optional = Optional.ofNullable(deviceEntity);
         for (final DeviceEntity d : DB) {
             if (d.getDeviceName().equals(name) && d.getDeviceId() == id)
                 deviceEntity = d;
         }
-        return optional;
+        return Optional.ofNullable(deviceEntity);
     }
 
     @Override

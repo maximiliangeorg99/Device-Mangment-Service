@@ -1,4 +1,4 @@
-package entity;
+package c24.thriftshop.webjavalin.entity;
 
 public class RegisterRequest {
     private String name;

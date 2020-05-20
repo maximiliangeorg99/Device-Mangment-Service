@@ -1,5 +1,6 @@
-package handler;
+package c24.thriftshop.webjavalin.handler;
 
+import com.google.inject.Inject;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import kong.unirest.HttpResponse;
@@ -8,6 +9,10 @@ import kong.unirest.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
 
 public class LoginHandler implements Handler {
+    @Inject
+    public LoginHandler() {
+    }
+
     @Override
     public void handle(@NotNull final Context ctx) throws Exception {
         final String body = ctx.body();

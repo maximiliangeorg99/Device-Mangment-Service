@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.UUID;
 
 public class JsonUserRepository implements UserRepository {
-    private final File DB = new File("C:\\dev\\training\\Device-Managment-Service\\stripe-api-demo\\src\\main\\java\\c24\\thriftshop\\stripe\\demo\\persistence\\User\\JsonFiles", "users.json");
+    private final File DB = new File("C:\\dev\\training\\Device-Managment-Service\\stripe-api-demo\\src\\main\\java\\c24\\thriftshop\\stripe\\demo\\c24.thriftshop.webjavalin.persistence\\User\\JsonFiles", "users.json");
     Gson gson = new Gson();
     private FileWriter fileWriter;
     private Scanner scanner;

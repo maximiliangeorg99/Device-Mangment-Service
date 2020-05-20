@@ -1,6 +1,7 @@
-package handler;
+package c24.thriftshop.webjavalin.handler;
 
-import exceptions.NotAuthorizedException;
+import c24.thriftshop.webjavalin.exceptions.NotAuthorizedException;
+import com.google.inject.Inject;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import kong.unirest.HttpResponse;
@@ -9,6 +10,10 @@ import kong.unirest.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
 
 public class BeforeHandler implements Handler {
+    @Inject
+    public BeforeHandler() {
+    }
+
     @Override
     public void handle(@NotNull final Context ctx) throws Exception {
         final String header = ctx.header("Authorization");

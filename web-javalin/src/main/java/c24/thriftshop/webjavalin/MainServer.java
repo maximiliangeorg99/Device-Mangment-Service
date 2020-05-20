@@ -1,20 +1,50 @@
-import exceptions.AlreadyRegisteredException;
-import exceptions.NotAuthorizedException;
-import exceptions.WrongPasswordException;
-import handler.*;
+package c24.thriftshop.webjavalin;
+
+
+import c24.thriftshop.webjavalin.exceptions.AlreadyRegisteredException;
+import c24.thriftshop.webjavalin.exceptions.NotAuthorizedException;
+import c24.thriftshop.webjavalin.exceptions.WrongPasswordException;
+import c24.thriftshop.webjavalin.guice.DBModule;
+import c24.thriftshop.webjavalin.handler.*;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.name.Named;
 import io.javalin.Javalin;
+import io.javalin.http.Handler;
 import org.apache.logging.log4j.Logger;
-import persistence.DeviceRepository;
-import persistence.InMemoryDataBase;
 
 import static io.javalin.apibuilder.ApiBuilder.post;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
-final class JavalinServer {
-    private final static Logger _log = getLogger(JavalinServer.class);
-    private final static DeviceRepository deviceRepository = new InMemoryDataBase();
+public final class MainServer {
+    private final static Logger _log = getLogger(MainServer.class);
+    @Inject
+    BeforeHandler beforeHandler;
+
+    @Inject
+    @Named("AddHandler")
+    Handler addHandler;
+
+    @Inject
+    RegisterHandler registerHandler;
+
+    @Inject
+    LoginHandler loginHandler;
+
+    @Inject
+    RentHandler rentHandler;
+
+    @Inject
+    ReturnHandler returnHandler;
 
     public static void main(final String[] args) {
+        final Injector injector = Guice.createInjector(new DBModule());
+        final MainServer mainServer = injector.getInstance(MainServer.class);
+        mainServer.start();
+    }
+
+    public void start() {
         final Javalin app = Javalin.create(config -> {
                     config.accessManager((handler, ctx, permittedRoles) -> handler.handle(ctx));
                     config.enableDevLogging();
@@ -33,7 +63,6 @@ final class JavalinServer {
 
                     });
                 }
-
         );
         app.start(8090);
         app.exception(Exception.class, (e, ctx) -> {
@@ -45,16 +74,17 @@ final class JavalinServer {
                 ctx.status(500).result(e.getMessage());
             } else {
                 ctx.status(500).result(("We are sorry, something unexpectedly happened on our side"));
+                e.printStackTrace();
             }
         });
-        app.before("/devices/*", new BeforeHandler());
+        app.before("/devices/*", beforeHandler);
 
         app.routes(() -> {
-            post("/register", new RegisterHandler());
-            post("/user/login", new LoginHandler());
-            post("/devices/rent", new RentHandler(deviceRepository));
-            post("/devices/return", new ReturnHandler(deviceRepository));
-            post("/devices/add", new AddHandler(deviceRepository)); //Admin Role?
+            post("/register", registerHandler);
+            post("/user/login", loginHandler);
+            post("/devices/rent", rentHandler);
+            post("/devices/return", returnHandler);
+            post("/devices/add", addHandler); //Admin Role?
         });
     }
 }
