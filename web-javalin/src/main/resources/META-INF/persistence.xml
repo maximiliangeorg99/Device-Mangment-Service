@@ -1,0 +1,12 @@
+<persistence-unit name="web-javalin">
+    <class>c24.thriftshop.webjavalin.entity.DeviceEntity</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+        <property name="hibernate.hbm2ddl.auto" value="update"/>
+        <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+        <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306"/>
+        <property name="javax.persistence.jdbc.user" value="c24"/>
+        <property name="javax.persistence.jdbc.password" value="Chrono24!"/>
+    </properties>
+</persistence-unit>

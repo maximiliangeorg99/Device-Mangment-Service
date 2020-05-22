@@ -1,20 +1,35 @@
 package c24.thriftshop.webjavalin.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-import java.util.UUID;
 
+@Entity
+@Table(name = "DEVICE")
 public class DeviceEntity {
 
-    private UUID id;
+    @Id
+    @Column(name = "ID")
+    private int id;
+    @Column(name = "DEVICE_NAME")
     private String deviceName;
+    //Because we don't have a lot of Devices with the same Name this is implemented with an increasing counter
+    @Column(name = "DEVICE_ID")
     private int deviceId;
+    @Column(name = "DEVICE_DESCRIPTION")
     private String deviceDescription;
+    @Column(name = "AVAILABLE")
     private boolean available;
+    @Column(name = "USER_ID")
     private String userId;
+    @Column(name = "RENT_DATE")
     private Date rentDate;
+    @Column(name = "RETURN_DATE")
     private Date returnDate;
 
-    public DeviceEntity(final UUID id, final String deviceName, final int deviceId, final String deviceDescription, final boolean available, final String userId, final Date rentDate, final Date returnDate) {
+    public DeviceEntity(final int id, final String deviceName, final int deviceId, final String deviceDescription, final boolean available, final String userId, final Date rentDate, final Date returnDate) {
         this.id = id;
         this.deviceName = deviceName;
         this.deviceId = deviceId;
@@ -44,11 +59,11 @@ public class DeviceEntity {
         this.deviceDescription = deviceDescription;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(final UUID id) {
+    public void setId(final int id) {
         this.id = id;
     }
 

@@ -8,8 +8,6 @@ import io.javalin.http.Handler;
 import kong.unirest.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.UUID;
-
 public class AddHandler implements Handler {
 
     DeviceRepository deviceRepository;
@@ -24,7 +22,7 @@ public class AddHandler implements Handler {
         final String body = ctx.body();
         final JSONObject jsonObject = new JSONObject(body);
         final int userId = deviceRepository.countByDeviceName(jsonObject.getString("name")) + 1;
-        final DeviceEntity deviceEntity = new DeviceEntity(UUID.randomUUID(), jsonObject.getString("name"), userId, jsonObject.getString("description"), true, "", null, null);
+        final DeviceEntity deviceEntity = new DeviceEntity((int) deviceRepository.count() + 1, jsonObject.getString("name"), userId, jsonObject.getString("description"), true, "", null, null);
         deviceRepository.save(deviceEntity);
     }
 }

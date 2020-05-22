@@ -5,7 +5,6 @@ import c24.thriftshop.webjavalin.entity.DeviceEntity;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.UUID;
 
 public class InMemoryDataBase implements DeviceRepository {
     ArrayList<DeviceEntity> DB = new ArrayList<>();
@@ -25,17 +24,17 @@ public class InMemoryDataBase implements DeviceRepository {
     }
 
     @Override
-    public void deleteById(final UUID uuid) {
+    public void deleteById(final Integer id) {
         for (final DeviceEntity d : DB) {
-            if (d.getId().equals(uuid))
+            if (d.getId() == id)
                 DB.remove(d);
         }
     }
 
     @Override
-    public boolean existsById(final UUID uuid) {
+    public boolean existsById(final Integer id) {
         for (final DeviceEntity d : DB) {
-            if (d.getId().equals(uuid))
+            if (d.getId() == id)
                 return true;
         }
         return false;
@@ -47,10 +46,10 @@ public class InMemoryDataBase implements DeviceRepository {
     }
 
     @Override
-    public Optional<DeviceEntity> findById(final UUID uuid) {
+    public Optional<DeviceEntity> findById(final Integer id) {
         DeviceEntity deviceEntity = null;
         for (final DeviceEntity d : DB) {
-            if (d.getId().equals(uuid))
+            if (d.getId() == id)
                 deviceEntity = d;
         }
         return Optional.ofNullable(deviceEntity);
