@@ -9,7 +9,6 @@ import c24.thriftshop.webjavalin.handler.*;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.name.Named;
 import io.javalin.Javalin;
 import io.javalin.http.Handler;
 import org.apache.logging.log4j.Logger;
@@ -19,11 +18,11 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 public final class MainServer {
     private final static Logger _log = getLogger(MainServer.class);
+
     @Inject
     BeforeHandler beforeHandler;
 
     @Inject
-    @Named("AddHandler")
     Handler addHandler;
 
     @Inject
