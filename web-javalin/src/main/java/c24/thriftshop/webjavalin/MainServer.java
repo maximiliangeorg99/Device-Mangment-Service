@@ -6,6 +6,8 @@ import c24.thriftshop.webjavalin.exceptions.NotAuthorizedException;
 import c24.thriftshop.webjavalin.exceptions.WrongPasswordException;
 import c24.thriftshop.webjavalin.guice.DBModule;
 import c24.thriftshop.webjavalin.handler.*;
+import c24.thriftshop.webjavalin.persistence.DeviceRepository;
+import c24.thriftshop.webjavalin.persistence.HibernateRepository;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -18,6 +20,8 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 public final class MainServer {
     private final static Logger _log = getLogger(MainServer.class);
+    @Inject
+    DeviceRepository deviceRepository;
 
     @Inject
     BeforeHandler beforeHandler;
@@ -39,8 +43,14 @@ public final class MainServer {
 
     public static void main(final String[] args) {
         final Injector injector = Guice.createInjector(new DBModule());
-        final MainServer mainServer = injector.getInstance(MainServer.class);
-        mainServer.start();
+        final DeviceRepository deviceRepository = new HibernateRepository();
+        try {
+            final MainServer mainServer = injector.getInstance(MainServer.class);
+            mainServer.start();
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void start() {

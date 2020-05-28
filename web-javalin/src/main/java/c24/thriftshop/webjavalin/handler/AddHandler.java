@@ -21,8 +21,13 @@ public class AddHandler implements Handler {
     public void handle(@NotNull final Context ctx) throws Exception {
         final String body = ctx.body();
         final JSONObject jsonObject = new JSONObject(body);
-        final int userId = deviceRepository.countByDeviceName(jsonObject.getString("name")) + 1;
-        final DeviceEntity deviceEntity = new DeviceEntity((int) deviceRepository.count() + 1, jsonObject.getString("name"), userId, jsonObject.getString("description"), true, "", null, null);
+        final DeviceEntity deviceEntity = new DeviceEntity();
+        deviceEntity.setDeviceName(jsonObject.getString("name"));
+        deviceEntity.setUserId("");
+        deviceEntity.setDeviceDescription(jsonObject.getString("description"));
+        deviceEntity.setAvailable(true);
+        deviceEntity.setRentDate(null);
+        deviceEntity.setReturnDate(null);
         deviceRepository.save(deviceEntity);
     }
 }

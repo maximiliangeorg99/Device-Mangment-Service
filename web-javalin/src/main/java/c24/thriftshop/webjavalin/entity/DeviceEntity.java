@@ -29,17 +29,6 @@ public class DeviceEntity {
     @Column(name = "RETURN_DATE")
     private Date returnDate;
 
-    public DeviceEntity(final int id, final String deviceName, final int deviceId, final String deviceDescription, final boolean available, final String userId, final Date rentDate, final Date returnDate) {
-        this.id = id;
-        this.deviceName = deviceName;
-        this.deviceId = deviceId;
-        this.deviceDescription = deviceDescription;
-        this.available = available;
-        this.userId = userId;
-        this.rentDate = rentDate;
-        this.returnDate = returnDate;
-    }
-
     public DeviceEntity() {
     }
 
@@ -87,8 +76,8 @@ public class DeviceEntity {
         return userId;
     }
 
-    public void setUserId(final String email) {
-        this.userId = email;
+    public void setUserId(final String username) {
+        this.userId = username;
     }
 
     public Date getRentDate() {

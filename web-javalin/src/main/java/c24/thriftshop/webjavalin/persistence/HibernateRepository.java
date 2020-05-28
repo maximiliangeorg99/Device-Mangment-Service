@@ -1,20 +1,21 @@
 package c24.thriftshop.webjavalin.persistence;
 
 import c24.thriftshop.webjavalin.entity.DeviceEntity;
-import com.google.inject.Inject;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class HibernateRepository implements DeviceRepository {
+    private static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("thriftshop");
     private final EntityManager entityManager;
 
-    @Inject
-    public HibernateRepository(final EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public HibernateRepository() {
+        this.entityManager = entityManagerFactory.createEntityManager();
     }
 
     @Override
