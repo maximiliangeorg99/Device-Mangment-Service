@@ -46,7 +46,7 @@ public class HibernateRepository implements DeviceRepository {
         try {
             et = entityManager.getTransaction();
             et.begin();
-            final Optional<DeviceEntity> result = entityManager.createQuery("SELECT device from DeviceEntity device where device.deviceName = ?1 and device.deviceId = ?2")
+            final Optional result = entityManager.createQuery("SELECT device from DeviceEntity device where device.deviceName = ?1 and device.deviceId = ?2")
                     .setParameter(1, name)
                     .setParameter(2, id)
                     .getResultStream().findFirst();

@@ -21,9 +21,6 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 public final class MainServer {
     private final static Logger _log = getLogger(MainServer.class);
     @Inject
-    DeviceRepository deviceRepository;
-
-    @Inject
     BeforeHandler beforeHandler;
 
     @Inject
