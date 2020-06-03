@@ -15,6 +15,7 @@
         <module>Authentication</module>
         <module>web-javalin</module>
         <module>BuilderDemo</module>
+        <module>Hibernate-GuiceDemo</module>
     </modules>
 
     <properties>

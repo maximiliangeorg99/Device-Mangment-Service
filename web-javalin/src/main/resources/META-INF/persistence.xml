@@ -5,7 +5,6 @@
     <persistence-unit name="thriftshop">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:global/jdbc/default</jta-data-source>
-        <class>c24.thriftshop.webjavalin.persistence.HibernateRepository</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
