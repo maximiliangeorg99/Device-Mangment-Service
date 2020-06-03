@@ -140,7 +140,7 @@ public class jdbcRepository implements DeviceRepository {
     public Optional<DeviceEntity> findById(final UUID uuid) {
         Optional<DeviceEntity> optional = Optional.empty();
         try {
-            final String sql = "SELECT device FROM DEVICE device WHERE ID = ?";
+            final String sql = "SELECT * FROM DEVICE device WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, uuid.toString());
             final ResultSet rs = statement.executeQuery(sql);
