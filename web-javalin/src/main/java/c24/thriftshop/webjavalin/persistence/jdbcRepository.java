@@ -12,8 +12,11 @@ public class jdbcRepository implements DeviceRepository {
     private Connection connection = null;
 
     public jdbcRepository() {
+        final String DB_URL = "jdbc:mysql://localhost:3306/thriftshop";
+        final String USER = "c24";
+        final String PASS = "Chrono24!";
         try {
-            this.connection = DriverManager.getConnection("jdbc:mysql://c24:Chrono24!@localhost:3306/");
+            this.connection = DriverManager.getConnection(DB_URL, USER, PASS);
         } catch (final SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -23,10 +26,12 @@ public class jdbcRepository implements DeviceRepository {
     public Optional<DeviceEntity> findByDeviceName(final String name) {
         Optional<DeviceEntity> optional = Optional.empty();
         try {
-            final String sql = "SELECT * FROM DEVICE device WHERE DEVICE_NAME = ?";
+            final String sql = "SELECT * FROM DEVICE WHERE DEVICE_NAME = ?";
             final PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, name);
-            final ResultSet rs = statement.executeQuery(sql);
+            final ResultSet rs = statement.executeQuery();
+            rs.next();
+            System.out.println(rs.getString("ID"));
             final DeviceEntity deviceEntity = new DeviceEntity(UUID.fromString(rs.getString("ID")), rs.getString("DEVICE_NAME"), rs.getInt("DEVICE_ID"), rs.getString("DEVICE_DESCRIPTION"), rs.getBoolean("AVAILABLE"), rs.getString("USER_ID"), rs.getDate("RENT_DATE"), rs.getDate("RETURN_DATE"));
             optional = Optional.of(deviceEntity);
         } catch (final SQLException throwables) {
@@ -43,7 +48,8 @@ public class jdbcRepository implements DeviceRepository {
             final PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, name);
             statement.setString(2, String.valueOf(id));
-            final ResultSet rs = statement.executeQuery(sql);
+            final ResultSet rs = statement.executeQuery();
+            rs.first();
             final DeviceEntity deviceEntity = new DeviceEntity(UUID.fromString(rs.getString("ID")), rs.getString("DEVICE_NAME"), rs.getInt("DEVICE_ID"), rs.getString("DEVICE_DESCRIPTION"), rs.getBoolean("AVAILABLE"), rs.getString("USER_ID"), rs.getDate("RENT_DATE"), rs.getDate("RETURN_DATE"));
             optional = Optional.of(deviceEntity);
         } catch (final SQLException throwables) {
@@ -59,7 +65,7 @@ public class jdbcRepository implements DeviceRepository {
             final String sql = "SELECT * FROM DEVICE WHERE DEVICE_NAME=?";
             final PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, name);
-            final ResultSet rs = statement.executeQuery(sql);
+            final ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 c++;
             }
@@ -143,7 +149,8 @@ public class jdbcRepository implements DeviceRepository {
             final String sql = "SELECT * FROM DEVICE device WHERE ID = ?";
             final PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, uuid.toString());
-            final ResultSet rs = statement.executeQuery(sql);
+            final ResultSet rs = statement.executeQuery();
+            rs.first();
             final DeviceEntity deviceEntity = new DeviceEntity(UUID.fromString(rs.getString("ID")), rs.getString("DEVICE_NAME"), rs.getInt("DEVICE_ID"), rs.getString("DEVICE_DESCRIPTION"), rs.getBoolean("AVAILABLE"), rs.getString("USER_ID"), rs.getDate("RENT_DATE"), rs.getDate("RETURN_DATE"));
             optional = Optional.of(deviceEntity);
         } catch (final SQLException throwables) {
@@ -154,12 +161,15 @@ public class jdbcRepository implements DeviceRepository {
 
     @Override
     public DeviceEntity save(final DeviceEntity entity) {
-        final String sql = "INSERT INTO DEVICE (ID, AVAILABLE, DEVICE_DESCRIPTION, DEVICE_ID, DEVICE_NAME, RENT_DATE, RETURN_DATE, USER_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
+        final String sql;
+        if (!existsById(entity.getId())) {
+            sql = "INSERT INTO DEVICE (ID, AVAILABLE, DEVICE_DESCRIPTION, DEVICE_ID, DEVICE_NAME, RENT_DATE, RETURN_DATE, USER_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        } else {
+            sql = "UPDATE DEVICE SET ID=? AND AVAILABLE=? AND DEVICE_DESCRIPTION=? AND DEVICE_ID=? AND DEVICE_NAME=? AND RETURN_DATE=? AND RETURN_DATE=? AND USER_ID=? WHERE ID=?";
+        }
         final PreparedStatement statement;
         try {
             statement = connection.prepareStatement(sql);
-
             statement.setString(1, entity.getId().toString());
             statement.setBoolean(2, entity.isAvailable());
             statement.setString(3, entity.getDeviceDescription());
@@ -168,6 +178,9 @@ public class jdbcRepository implements DeviceRepository {
             statement.setDate(6, javaUtilDateToSqlDate(entity.getRentDate()));
             statement.setDate(7, javaUtilDateToSqlDate(entity.getReturnDate()));
             statement.setString(8, entity.getUserId());
+            if (existsById(entity.getId())) {
+                statement.setString(9, entity.getId().toString());
+            }
             statement.executeUpdate();
         } catch (final SQLException throwables) {
             throwables.printStackTrace();
@@ -176,13 +189,10 @@ public class jdbcRepository implements DeviceRepository {
     }
 
     private java.sql.Date javaUtilDateToSqlDate(final java.util.Date date) {
-        final java.util.Calendar cal = Calendar.getInstance();
-        final java.util.Date utilDate = new java.util.Date(); // your util date
-        cal.setTime(utilDate);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return new java.sql.Date(cal.getTime().getTime());
+        if (date == null) {
+            return null;
+        }
+        java.sql.Date sDate = new java.sql.Date(date.getTime());
+        return sDate;
     }
 }
