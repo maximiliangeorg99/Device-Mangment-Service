@@ -77,7 +77,19 @@ public class jdbcRepository implements DeviceRepository {
 
     @Override
     public ArrayList<DeviceEntity> findAllByDeviceName(final String name) {
-        return null;
+        final ArrayList<DeviceEntity> deviceEntities = new ArrayList<>();
+        try {
+            final String sql = "SELECT * FROM DEVICE WHERE DEVICE_NAME=?";
+            final PreparedStatement statement = connection.prepareStatement(sql);
+            final ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                final DeviceEntity deviceEntity = new DeviceEntity(UUID.fromString(rs.getString("ID")), rs.getString("DEVICE_NAME"), rs.getInt("DEVICE_ID"), rs.getString("DEVICE_DESCRIPTION"), rs.getBoolean("AVAILABLE"), rs.getString("USER_ID"), rs.getDate("RENT_DATE"), rs.getDate("RETURN_DATE"));
+                deviceEntities.add(deviceEntity);
+            }
+        } catch (final SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return deviceEntities;
     }
 
     @Override
@@ -154,7 +166,6 @@ public class jdbcRepository implements DeviceRepository {
             final DeviceEntity deviceEntity = new DeviceEntity(UUID.fromString(rs.getString("ID")), rs.getString("DEVICE_NAME"), rs.getInt("DEVICE_ID"), rs.getString("DEVICE_DESCRIPTION"), rs.getBoolean("AVAILABLE"), rs.getString("USER_ID"), rs.getDate("RENT_DATE"), rs.getDate("RETURN_DATE"));
             optional = Optional.of(deviceEntity);
         } catch (final SQLException throwables) {
-            throwables.printStackTrace();
         }
         return optional;
     }
@@ -162,24 +173,30 @@ public class jdbcRepository implements DeviceRepository {
     @Override
     public DeviceEntity save(final DeviceEntity entity) {
         final String sql;
-        if (!existsById(entity.getId())) {
-            sql = "INSERT INTO DEVICE (ID, AVAILABLE, DEVICE_DESCRIPTION, DEVICE_ID, DEVICE_NAME, RENT_DATE, RETURN_DATE, USER_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        } else {
-            sql = "UPDATE DEVICE SET ID=? AND AVAILABLE=? AND DEVICE_DESCRIPTION=? AND DEVICE_ID=? AND DEVICE_NAME=? AND RETURN_DATE=? AND RETURN_DATE=? AND USER_ID=? WHERE ID=?";
-        }
         final PreparedStatement statement;
         try {
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, entity.getId().toString());
-            statement.setBoolean(2, entity.isAvailable());
-            statement.setString(3, entity.getDeviceDescription());
-            statement.setInt(4, entity.getDeviceId());
-            statement.setString(5, entity.getDeviceName());
-            statement.setDate(6, javaUtilDateToSqlDate(entity.getRentDate()));
-            statement.setDate(7, javaUtilDateToSqlDate(entity.getReturnDate()));
-            statement.setString(8, entity.getUserId());
-            if (existsById(entity.getId())) {
-                statement.setString(9, entity.getId().toString());
+            if (!existsById(entity.getId())) {
+                sql = "INSERT INTO DEVICE (ID, AVAILABLE, DEVICE_DESCRIPTION, DEVICE_ID, DEVICE_NAME, RENT_DATE, RETURN_DATE, USER_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                statement = connection.prepareStatement(sql);
+                statement.setString(1, entity.getId().toString());
+                statement.setBoolean(2, entity.isAvailable());
+                statement.setString(3, entity.getDeviceDescription());
+                statement.setInt(4, entity.getDeviceId());
+                statement.setString(5, entity.getDeviceName());
+                statement.setDate(6, javaUtilDateToSqlDate(entity.getRentDate()));
+                statement.setDate(7, javaUtilDateToSqlDate(entity.getReturnDate()));
+                statement.setString(8, entity.getUserId());
+            } else {
+                sql = "UPDATE DEVICE SET AVAILABLE=? , DEVICE_DESCRIPTION=? , DEVICE_ID=? , DEVICE_NAME=? , RENT_DATE=? , RETURN_DATE=? , USER_ID=? WHERE ID=?";
+                statement = connection.prepareStatement(sql);
+                statement.setBoolean(1, entity.isAvailable());
+                statement.setString(2, entity.getDeviceDescription());
+                statement.setInt(3, entity.getDeviceId());
+                statement.setString(4, entity.getDeviceName());
+                statement.setDate(5, javaUtilDateToSqlDate(entity.getRentDate()));
+                statement.setDate(6, javaUtilDateToSqlDate(entity.getReturnDate()));
+                statement.setString(7, entity.getUserId());
+                statement.setString(8, entity.getId().toString());
             }
             statement.executeUpdate();
         } catch (final SQLException throwables) {
